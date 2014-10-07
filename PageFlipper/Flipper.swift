@@ -205,7 +205,6 @@ class Flipper: UIView {
                 flipPage(animationLayer, progress: 0.0, animated: true, clearFlip: true)
             }
             
-            println("Ended or Canceled")
         case UIGestureRecognizerState.Failed:
             println("failed")
         case UIGestureRecognizerState.Possible:
@@ -251,7 +250,6 @@ class Flipper: UIView {
                 page.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusNone
                 self.animationArray.removeObject(page)
                 page.removeFromSuperlayer()
-                println(self.animationArray.count)
                 if self.animationArray.count == 0 {
                     
                     self.backgroundView = self.dataSource!.viewForPage(self.currentPage, flipper: self)
