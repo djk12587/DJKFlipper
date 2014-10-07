@@ -68,6 +68,18 @@ class AnimationLayer: CATransformLayer {
         isFirstOrLastPage = isFirstOrLast
     }
     
+    override init() {
+        super.init()
+    }
+    
+    override init(layer: AnyObject!) {
+        super.init(layer: layer)
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     func test() {
         backLayer = CALayer(layer: self)
         backLayer.frame = self.bounds
@@ -104,17 +116,4 @@ class AnimationLayer: CATransformLayer {
         
         backLayer.contents = rightImgRef
     }
-    
-    override init() {
-        super.init()
-    }
-    
-    override init(layer: AnyObject!) {
-        super.init(layer: layer)
-    }
-
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-   
 }

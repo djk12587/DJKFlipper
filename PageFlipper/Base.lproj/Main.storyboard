@@ -8,7 +8,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="PageFlipper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="DJKSwiftFlipper" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -16,8 +16,23 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Csw-VN-O7v" customClass="Flipper" customModule="DJKSwiftFlipper" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Csw-VN-O7v" secondAttribute="bottom" id="bJa-m4-Bey"/>
+                            <constraint firstItem="Csw-VN-O7v" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="gol-Bh-ade"/>
+                            <constraint firstAttribute="trailing" secondItem="Csw-VN-O7v" secondAttribute="trailing" id="ja9-EG-JXF"/>
+                            <constraint firstItem="Csw-VN-O7v" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="xVd-R7-B0O"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="flipView" destination="Csw-VN-O7v" id="NdI-8a-K0o"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

@@ -25,6 +25,7 @@ class Flipper: UIView {
     var backgroundView:UIView!
     
     lazy var staticView:StaticView = {
+        println(self.frame)
         let view = StaticView(frame: self.frame)
         return view
     }()
@@ -69,7 +70,7 @@ class Flipper: UIView {
     
     var flipperStatus = FlipperStatus.FlipperStatusInactive
     
-    var animationArray:NSMutableArray!
+    var animationArray:NSMutableArray = NSMutableArray()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -77,12 +78,13 @@ class Flipper: UIView {
         var panGesture = UIPanGestureRecognizer(target: self, action: "pan:")
         self.addGestureRecognizer(panGesture)
         
-        animationArray = NSMutableArray()
-        
     }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        var panGesture = UIPanGestureRecognizer(target: self, action: "pan:")
+        self.addGestureRecognizer(panGesture)
+
     }
     
     func pan(gesture:UIPanGestureRecognizer) {
@@ -112,9 +114,8 @@ class Flipper: UIView {
 
             var animationLayer = animationArray.lastObject as AnimationLayer
             
-            //check if there is an animation layer before this animating
+            //check if there is an animation layer before that is still animating at the opposite swipe direction
             //If there is then we need to remove the newly added layer and grab that previous layer and animate it in the opposite direction
-            
             if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusBeginning {
                 
                 if translation > 0 {

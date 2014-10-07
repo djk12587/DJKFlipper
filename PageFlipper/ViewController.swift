@@ -9,8 +9,8 @@
 import UIKit
 
 class ViewController: UIViewController, FlipperDataSource {
-
-    var flipperView:Flipper?
+    
+    @IBOutlet weak var flipView: Flipper!
     var imageAndViewarray:[(view:UIView,snapshot:UIImage)]!  = nil
     
     override func viewDidLoad() {
@@ -28,12 +28,21 @@ class ViewController: UIViewController, FlipperDataSource {
         page3.view.frame = self.view.bounds
         page3.backgroundImage.image = UIImage(named: "page3")
         
-        imageAndViewarray = [(page1.view,page1.view.takeSnapshot()),(page2.view,page2.view.takeSnapshot()),(page3.view,page3.view.takeSnapshot())]
+        var page4 = PageTestViewController(nibName: "PageTestViewController", bundle: nil)
+        page4.view.frame = self.view.bounds
+        page4.backgroundImage.image = UIImage(named: "page1")
         
-        flipperView = Flipper(frame: self.view.frame)
-        flipperView?.dataSource = self
-        self.view.addSubview(flipperView!)
-     
+        var page5 = PageTestViewController(nibName: "PageTestViewController", bundle: nil)
+        page5.view.frame = self.view.bounds
+        page5.backgroundImage.image = UIImage(named: "page2")
+        
+        var page6 = PageTestViewController(nibName: "PageTestViewController", bundle: nil)
+        page6.view.frame = self.view.bounds
+        page6.backgroundImage.image = UIImage(named: "page3")
+        
+        imageAndViewarray = [(page1.view,page1.view.takeSnapshot()),(page2.view,page2.view.takeSnapshot()),(page3.view,page3.view.takeSnapshot()),(page4.view,page4.view.takeSnapshot()),(page5.view,page5.view.takeSnapshot()),(page6.view,page6.view.takeSnapshot())]
+        
+        flipView?.dataSource = self
     }
     
     func numberOfPages(flipper: Flipper) -> NSInteger {
