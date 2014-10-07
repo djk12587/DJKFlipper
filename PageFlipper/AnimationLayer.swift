@@ -26,6 +26,7 @@ enum FlipAnimationStatus {
     case FlipAnimationStatusBeginning
     case FlipAnimationStatusActive
     case FlipAnimationStatusCompleting
+    case FlipAnimationStatusInterrupt
     case FlipAnimationStatusFail
 }
 
