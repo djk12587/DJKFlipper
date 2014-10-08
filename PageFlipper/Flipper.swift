@@ -25,7 +25,6 @@ class Flipper: UIView {
     var backgroundView:UIView!
     
     lazy var staticView:StaticView = {
-        println(self.frame)
         let view = StaticView(frame: self.frame)
         return view
     }()
@@ -201,7 +200,18 @@ class Flipper: UIView {
                     
                     self.layer.addSublayer(animationLayer)
                     
-                    animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusActive
+                    //if the user is swiping the screen with a lot of velocity just perform the entire animation at once
+                    //you need to perform a flush otherwise the animation duration is not honored.
+                    //more information can be found here http://stackoverflow.com/questions/8661355/implicit-animation-fade-in-is-not-working#comment10764056_8661741
+                    if fabs(gesture.velocityInView(self).x) > 400 {
+                        if animationLayer.isFirstOrLastPage == true {
+                            animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusActive
+                        } else {
+                            CATransaction.flush()
+                        }
+                    } else {
+                        animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusActive
+                    }
                 }
             }
             
@@ -211,16 +221,20 @@ class Flipper: UIView {
                 flipperStatus = FlipperStatus.FlipperStatusActive
             }
             
-            if translation > 0 {
-                progress = max(progress, 0)
-            } else {
-                progress = min(progress, 0)
-            }
-            
-            progress = fabs(progress)
-            
             if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusActive {
+            
+                if translation > 0 {
+                    progress = max(progress, 0)
+                } else {
+                    progress = min(progress, 0)
+                }
+                
+                progress = fabs(progress)
                 flipPage(animationLayer, progress: progress, animated: false, clearFlip: false)
+
+            } else if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusBeginning {
+                animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusCompleting
+                flipPage(animationLayer, progress: 1.0, animated: true, clearFlip: true)
             }
             
         case UIGestureRecognizerState.Ended,UIGestureRecognizerState.Cancelled:
@@ -254,6 +268,11 @@ class Flipper: UIView {
         case UIGestureRecognizerState.Possible:
             println("Possible")
         }
+    }
+    
+    func someSelector() {
+        var animationLayer = animationArray.lastObject as AnimationLayer
+        flipPage(animationLayer, progress: 1.0, animated: true, clearFlip: true)
     }
     
     func flipPage(page:AnimationLayer,progress:CGFloat,animated:Bool,clearFlip:Bool) {
@@ -297,6 +316,7 @@ class Flipper: UIView {
         
         if clearFlip {
             CATransaction.setCompletionBlock { () -> Void in
+                
                 if page.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusInterrupt {
 
                     page.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusCompleting
@@ -307,10 +327,11 @@ class Flipper: UIView {
                     page.removeFromSuperlayer()
                     if self.animationArray.count == 0 {
                         
+                        self.flipperStatus = FlipperStatus.FlipperStatusInactive
+
                         self.backgroundView = self.dataSource!.viewForPage(self.currentPage, flipper: self)
                         self.addSubview(self.backgroundView)
-                        
-                        self.flipperStatus = FlipperStatus.FlipperStatusInactive
+
                         self.staticView.removeFromSuperlayer()
                         self.staticView.leftSide.contents = nil
                         self.staticView.rightSide.contents = nil
