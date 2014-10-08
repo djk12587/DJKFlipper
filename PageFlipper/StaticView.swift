@@ -50,6 +50,27 @@ class StaticView: CATransformLayer {
         self.addSublayer(rightSide)
     }
     
+    override init(layer: AnyObject!) {
+        super.init(layer: layer)
+        self.addSublayer(leftSide)
+        self.addSublayer(rightSide)
+    }
+    
+    func updateFrame(newFrame:CGRect) {
+        self.frame = newFrame
+        updatePageLayerFrames(newFrame)
+    }
+    
+    private func updatePageLayerFrames(newFrame:CGRect) {
+        var frame = self.bounds
+        
+        leftSide.frame = newFrame
+        
+        frame.size.width = frame.size.width / 2
+        frame.origin.x = frame.size.width
+        rightSide.frame = frame
+    }
+    
     func setRightSide(image:UIImage) {
         
         var tmpImageRef = image.CGImage

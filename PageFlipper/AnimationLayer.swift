@@ -80,17 +80,6 @@ class AnimationLayer: CATransformLayer {
         super.init(coder: aDecoder)
     }
     
-    func test() {
-        backLayer = CALayer(layer: self)
-        backLayer.frame = self.bounds
-        backLayer.doubleSided = false
-        backLayer.transform = CATransform3DMakeRotation(0, 0, 1.0, 0);
-        //        backLayer.contentsScale = UIScreen.mainScreen().scale
-        backLayer.backgroundColor = UIColor.greenColor().CGColor
-        
-        self.addSublayer(backLayer)
-    }
-    
     func updateFlipDirection(direction:FlipDirection) {
         flipDirection = direction
         if flipDirection == FlipDirection.FlipDirectionLeft {

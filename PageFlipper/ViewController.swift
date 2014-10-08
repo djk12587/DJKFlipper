@@ -60,5 +60,13 @@ class ViewController: UIViewController, FlipperDataSource {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
+    override func shouldAutorotate() -> Bool {
+        if flipView.flipperStatus == FlipperStatus.FlipperStatusInactive {
+            return true
+        } else {
+            return false
+        }
+    }
 }
 

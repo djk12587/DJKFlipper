@@ -61,8 +61,7 @@ class Flipper: UIView {
                 numberOfPages = data.numberOfPages(self)
                 currentPage = 0
                 
-                self.backgroundView = data.viewForPage(currentPage, flipper: self)
-                self.addSubview(self.backgroundView)
+                getAndAddNewBackground()
             }
         }
     }
@@ -83,7 +82,28 @@ class Flipper: UIView {
         super.init(coder: aDecoder)
         var panGesture = UIPanGestureRecognizer(target: self, action: "pan:")
         self.addGestureRecognizer(panGesture)
-
+    }
+    
+    override func layoutSublayersOfLayer(layer: CALayer!) {
+        super.layoutSublayersOfLayer(layer)
+        
+        if staticView.bounds != self.bounds {
+            staticView.updateFrame(self.bounds)
+        }
+    }
+    
+    func getAndAddNewBackground() {
+        self.backgroundView = self.dataSource!.viewForPage(self.currentPage, flipper: self)
+        self.addSubview(self.backgroundView)
+        
+        //set up the constraints
+        self.backgroundView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        var viewDictionary = ["backgroundView":self.backgroundView]
+        var constraintTop = NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[backgroundView]-0-|", options: NSLayoutFormatOptions.AlignAllTop, metrics: nil, views: viewDictionary)
+        var constraintLeft = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[backgroundView]-0-|", options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: viewDictionary)
+        
+        self.addConstraints(constraintTop)
+        self.addConstraints(constraintLeft)
     }
     
     func pan(gesture:UIPanGestureRecognizer) {
@@ -203,7 +223,7 @@ class Flipper: UIView {
                     //if the user is swiping the screen with a lot of velocity just perform the entire animation at once
                     //you need to perform a flush otherwise the animation duration is not honored.
                     //more information can be found here http://stackoverflow.com/questions/8661355/implicit-animation-fade-in-is-not-working#comment10764056_8661741
-                    if fabs(gesture.velocityInView(self).x) > 400 {
+                    if fabs(gesture.velocityInView(self).x) > 500 {
                         if animationLayer.isFirstOrLastPage == true {
                             animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusActive
                         } else {
@@ -270,18 +290,13 @@ class Flipper: UIView {
         }
     }
     
-    func someSelector() {
-        var animationLayer = animationArray.lastObject as AnimationLayer
-        flipPage(animationLayer, progress: 1.0, animated: true, clearFlip: true)
-    }
-    
     func flipPage(page:AnimationLayer,progress:CGFloat,animated:Bool,clearFlip:Bool) {
         
         var newAngle:CGFloat = page.flipProperties.startAngle + progress * (page.flipProperties.endFlipAngle - page.flipProperties.startAngle)
         
         var duration:CGFloat
         
-        var durationConstant:CGFloat = 0.95
+        var durationConstant:CGFloat = 0.75
         
         if page.isFirstOrLastPage == true {
             durationConstant = 0.5
@@ -329,8 +344,7 @@ class Flipper: UIView {
                         
                         self.flipperStatus = FlipperStatus.FlipperStatusInactive
 
-                        self.backgroundView = self.dataSource!.viewForPage(self.currentPage, flipper: self)
-                        self.addSubview(self.backgroundView)
+                        self.getAndAddNewBackground()
 
                         self.staticView.removeFromSuperlayer()
                         self.staticView.leftSide.contents = nil
