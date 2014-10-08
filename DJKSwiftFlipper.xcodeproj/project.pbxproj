@@ -392,7 +392,7 @@
 		D5A6CF8319DDE5F6000C359A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				BUNDLE_LOADER = "build/Products/Debug-iphonesimulator/DJKSwiftFlipper.app/DJKSwiftFlipper";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -404,14 +404,14 @@
 				INFOPLIST_FILE = PageFlipperTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = DJKSwiftFlipperTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PageFlipper.app/PageFlipper";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DJKSwiftFlipper.app/DJKSwiftFlipper";
 			};
 			name = Debug;
 		};
 		D5A6CF8419DDE5F6000C359A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				BUNDLE_LOADER = "build/Release-iphoneos/DJKSwiftFlipper.app/DJKSwiftFlipper";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -419,7 +419,7 @@
 				INFOPLIST_FILE = PageFlipperTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = DJKSwiftFlipperTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PageFlipper.app/PageFlipper";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DJKSwiftFlipper.app/DJKSwiftFlipper";
 			};
 			name = Release;
 		};

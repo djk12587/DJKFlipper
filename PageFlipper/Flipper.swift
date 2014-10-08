@@ -130,156 +130,156 @@ class Flipper: UIView {
             animationArray.addObject(animationLayer)
             
         case UIGestureRecognizerState.Changed:
-
-            var animationLayer = animationArray.lastObject as AnimationLayer
             
-            //check if there is an animation layer before that is still animating at the opposite swipe direction
-            //If there is then we need to remove the newly added layer and grab that previous layer and animate it in the opposite direction
-            if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusBeginning {
-                
-                if translation > 0 {
-                    animationLayer.updateFlipDirection(FlipDirection.FlipDirectionRight)
-                } else {
-                    animationLayer.updateFlipDirection(FlipDirection.FlipDirectionLeft)
-                }
-                
-                if animationArray.count > 1 {
-                    var previousAnimationLayer = animationArray[animationArray.count - 2] as AnimationLayer
-                    
-                    if previousAnimationLayer.flipDirection != animationLayer.flipDirection && !previousAnimationLayer.isFirstOrLastPage {
-                        animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusFail
-                        
-                        animationArray.removeObject(animationLayer)
-                        animationLayer = previousAnimationLayer
-                        
-                        animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusInterrupt
-                        
-                        if previousAnimationLayer.flipDirection == FlipDirection.FlipDirectionLeft {
-                            currentPage = currentPage - 1
-                            animationLayer.updateFlipDirection(FlipDirection.FlipDirectionRight)
-                            flipPage(animationLayer, progress: 0.0, animated: true, clearFlip: true)
-                        } else {
-                            currentPage = currentPage + 1
-                            animationLayer.updateFlipDirection(FlipDirection.FlipDirectionLeft)
-                            flipPage(animationLayer, progress: 1.0, animated: true, clearFlip: true)
-                        }
-                    }
-                }
-                
-                //if there is no conflict we create the set the front and back layer sides for the animation layer
-                //we also need to create the static layer that sites below the animation layer
+            if var animationLayer = animationArray.lastObject as? AnimationLayer {
+                //check if there is an animation layer before that is still animating at the opposite swipe direction
+                //If there is then we need to remove the newly added layer and grab that previous layer and animate it in the opposite direction
                 if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusBeginning {
-                    switch animationLayer.flipDirection {
-                    case FlipDirection.FlipDirectionNotSet:
-                        println("not set")
-                    case FlipDirection.FlipDirectionLeft:
-                        if currentPage + 1 > numberOfPages - 1 {
-                            //we are at the end
-                            animationLayer.flipProperties.endFlipAngle = -1.5
-                            animationLayer.isFirstOrLastPage = true
-                            animationLayer.setFrontLayer(dataSource!.imageForPage(currentPage, fipper: self))
-                        } else {
-                            //next page flip
-                            animationLayer.setFrontLayer(dataSource!.imageForPage(currentPage, fipper: self))
-                            currentPage = currentPage + 1
-                            animationLayer.setBackLayer(dataSource!.imageForPage(currentPage, fipper: self))
-                        }
-                    case FlipDirection.FlipDirectionRight:
-                        if currentPage - 1 < 0 {
-                            animationLayer.flipProperties.endFlipAngle = CGFloat(-M_PI) + 1.5
-                            animationLayer.isFirstOrLastPage = true
-                            animationLayer.setBackLayer(dataSource!.imageForPage(currentPage, fipper: self))
-                        } else {
-                            //previous page flip
-                            animationLayer.setBackLayer(dataSource!.imageForPage(currentPage, fipper: self))
-                            currentPage = currentPage - 1
-                            animationLayer.setFrontLayer(dataSource!.imageForPage(currentPage, fipper: self))
-                        }
-                    }
                     
-                    //set up the static layer
-                    if animationLayer.flipDirection == FlipDirection.FlipDirectionLeft {
-                        
-                        if animationLayer.isFirstOrLastPage == true {
-                            staticView.setLeftSide(dataSource!.imageForPage(currentPage, fipper: self))
-                            staticView.setRightSide(dataSource!.imageForPage(currentPage, fipper: self))
-                        } else {
-                            staticView.setLeftSide(dataSource!.imageForPage(currentPage - 1, fipper: self))
-                            staticView.setRightSide(dataSource!.imageForPage(currentPage, fipper: self))
-                        }
-                        
+                    if translation > 0 {
+                        animationLayer.updateFlipDirection(FlipDirection.FlipDirectionRight)
                     } else {
-                        if animationLayer.isFirstOrLastPage == true {
-                            staticView.setLeftSide(dataSource!.imageForPage(currentPage, fipper: self))
-                            staticView.setRightSide(dataSource!.imageForPage(currentPage, fipper: self))
-                        } else {
-                            staticView.setRightSide(dataSource!.imageForPage(currentPage + 1, fipper: self))
-                            staticView.setLeftSide(dataSource!.imageForPage(currentPage, fipper: self))
+                        animationLayer.updateFlipDirection(FlipDirection.FlipDirectionLeft)
+                    }
+                    
+                    if animationArray.count > 1 {
+                        var previousAnimationLayer = animationArray[animationArray.count - 2] as AnimationLayer
+                        
+                        if previousAnimationLayer.flipDirection != animationLayer.flipDirection && !previousAnimationLayer.isFirstOrLastPage {
+                            animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusFail
+                            
+                            animationArray.removeObject(animationLayer)
+                            animationLayer = previousAnimationLayer
+                            
+                            animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusInterrupt
+                            
+                            if previousAnimationLayer.flipDirection == FlipDirection.FlipDirectionLeft {
+                                currentPage = currentPage - 1
+                                animationLayer.updateFlipDirection(FlipDirection.FlipDirectionRight)
+                                flipPage(animationLayer, progress: 0.0, animated: true, clearFlip: true)
+                            } else {
+                                currentPage = currentPage + 1
+                                animationLayer.updateFlipDirection(FlipDirection.FlipDirectionLeft)
+                                flipPage(animationLayer, progress: 1.0, animated: true, clearFlip: true)
+                            }
                         }
                     }
                     
-                    self.layer.addSublayer(animationLayer)
-                    
-                    //if the user is swiping the screen with a lot of velocity just perform the entire animation at once
-                    //you need to perform a flush otherwise the animation duration is not honored.
-                    //more information can be found here http://stackoverflow.com/questions/8661355/implicit-animation-fade-in-is-not-working#comment10764056_8661741
-                    if fabs(gesture.velocityInView(self).x) > 500 {
-                        if animationLayer.isFirstOrLastPage == true {
+                    //if there is no conflict we create the set the front and back layer sides for the animation layer
+                    //we also need to create the static layer that sites below the animation layer
+                    if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusBeginning {
+                        switch animationLayer.flipDirection {
+                        case FlipDirection.FlipDirectionNotSet:
+                            println("not set")
+                        case FlipDirection.FlipDirectionLeft:
+                            if currentPage + 1 > numberOfPages - 1 {
+                                //we are at the end
+                                animationLayer.flipProperties.endFlipAngle = -1.5
+                                animationLayer.isFirstOrLastPage = true
+                                animationLayer.setFrontLayer(dataSource!.imageForPage(currentPage, fipper: self))
+                            } else {
+                                //next page flip
+                                animationLayer.setFrontLayer(dataSource!.imageForPage(currentPage, fipper: self))
+                                currentPage = currentPage + 1
+                                animationLayer.setBackLayer(dataSource!.imageForPage(currentPage, fipper: self))
+                            }
+                        case FlipDirection.FlipDirectionRight:
+                            if currentPage - 1 < 0 {
+                                animationLayer.flipProperties.endFlipAngle = CGFloat(-M_PI) + 1.5
+                                animationLayer.isFirstOrLastPage = true
+                                animationLayer.setBackLayer(dataSource!.imageForPage(currentPage, fipper: self))
+                            } else {
+                                //previous page flip
+                                animationLayer.setBackLayer(dataSource!.imageForPage(currentPage, fipper: self))
+                                currentPage = currentPage - 1
+                                animationLayer.setFrontLayer(dataSource!.imageForPage(currentPage, fipper: self))
+                            }
+                        }
+                        
+                        //set up the static layer
+                        if animationLayer.flipDirection == FlipDirection.FlipDirectionLeft {
+                            
+                            if animationLayer.isFirstOrLastPage == true {
+                                staticView.setLeftSide(dataSource!.imageForPage(currentPage, fipper: self))
+                                staticView.setRightSide(dataSource!.imageForPage(currentPage, fipper: self))
+                            } else {
+                                staticView.setLeftSide(dataSource!.imageForPage(currentPage - 1, fipper: self))
+                                staticView.setRightSide(dataSource!.imageForPage(currentPage, fipper: self))
+                            }
+                            
+                        } else {
+                            if animationLayer.isFirstOrLastPage == true {
+                                staticView.setLeftSide(dataSource!.imageForPage(currentPage, fipper: self))
+                                staticView.setRightSide(dataSource!.imageForPage(currentPage, fipper: self))
+                            } else {
+                                staticView.setRightSide(dataSource!.imageForPage(currentPage + 1, fipper: self))
+                                staticView.setLeftSide(dataSource!.imageForPage(currentPage, fipper: self))
+                            }
+                        }
+                        
+                        self.layer.addSublayer(animationLayer)
+                        
+                        //if the user is swiping the screen with a lot of velocity just perform the entire animation at once
+                        //you need to perform a flush otherwise the animation duration is not honored.
+                        //more information can be found here http://stackoverflow.com/questions/8661355/implicit-animation-fade-in-is-not-working#comment10764056_8661741
+                        if fabs(gesture.velocityInView(self).x) > 500 {
+                            if animationLayer.isFirstOrLastPage == true {
+                                animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusActive
+                            } else {
+                                CATransaction.flush()
+                            }
+                        } else {
                             animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusActive
-                        } else {
-                            CATransaction.flush()
                         }
-                    } else {
-                        animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusActive
                     }
-                }
-            }
-            
-            if flipperStatus == FlipperStatus.FlipperStatusBeginning {
-                self.layer.addSublayer(staticView)
-                backgroundView.removeFromSuperview()                
-                flipperStatus = FlipperStatus.FlipperStatusActive
-            }
-            
-            if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusActive {
-            
-                if translation > 0 {
-                    progress = max(progress, 0)
-                } else {
-                    progress = min(progress, 0)
                 }
                 
-                progress = fabs(progress)
-                flipPage(animationLayer, progress: progress, animated: false, clearFlip: false)
-
-            } else if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusBeginning {
-                animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusCompleting
-                flipPage(animationLayer, progress: 1.0, animated: true, clearFlip: true)
+                if flipperStatus == FlipperStatus.FlipperStatusBeginning {
+                    self.layer.addSublayer(staticView)
+                    backgroundView.removeFromSuperview()
+                    flipperStatus = FlipperStatus.FlipperStatusActive
+                }
+                
+                if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusActive {
+                    
+                    if translation > 0 {
+                        progress = max(progress, 0)
+                    } else {
+                        progress = min(progress, 0)
+                    }
+                    
+                    progress = fabs(progress)
+                    flipPage(animationLayer, progress: progress, animated: false, clearFlip: false)
+                    
+                } else if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusBeginning {
+                    animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusCompleting
+                    flipPage(animationLayer, progress: 1.0, animated: true, clearFlip: true)
+                }
             }
             
         case UIGestureRecognizerState.Ended,UIGestureRecognizerState.Cancelled:
-
-            var animationLayer = animationArray.lastObject as AnimationLayer
             
-            if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusActive {
-                animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusCompleting
-                
-                var releaseSpeed:CGFloat = (translation + gesture.velocityInView(self).x/4) / self.bounds.size.width
-                var speedThreshold:CGFloat = 0.5
-                
-                if fabs(releaseSpeed) > speedThreshold && !animationLayer.isFirstOrLastPage {
-                    flipPage(animationLayer, progress: 1.0, animated: true, clearFlip: true)
-                } else {
+            if var animationLayer = animationArray.lastObject as? AnimationLayer {
+                if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusActive {
+                    animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusCompleting
                     
-                    if !animationLayer.isFirstOrLastPage {
-                        if animationLayer.flipDirection == FlipDirection.FlipDirectionLeft {
-                            currentPage = currentPage - 1
-                        } else {
-                            currentPage = currentPage + 1
+                    var releaseSpeed:CGFloat = (translation + gesture.velocityInView(self).x/4) / self.bounds.size.width
+                    var speedThreshold:CGFloat = 0.5
+                    
+                    if fabs(releaseSpeed) > speedThreshold && !animationLayer.isFirstOrLastPage {
+                        flipPage(animationLayer, progress: 1.0, animated: true, clearFlip: true)
+                    } else {
+                        
+                        if !animationLayer.isFirstOrLastPage {
+                            if animationLayer.flipDirection == FlipDirection.FlipDirectionLeft {
+                                currentPage = currentPage - 1
+                            } else {
+                                currentPage = currentPage + 1
+                            }
                         }
+                        
+                        flipPage(animationLayer, progress: 0.0, animated: true, clearFlip: true)
                     }
-                    
-                    flipPage(animationLayer, progress: 0.0, animated: true, clearFlip: true)
                 }
             }
             
