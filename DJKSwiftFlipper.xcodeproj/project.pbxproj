@@ -392,7 +392,7 @@
 		D5A6CF8319DDE5F6000C359A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "build/Products/Debug-iphonesimulator/DJKSwiftFlipper.app/DJKSwiftFlipper";
+				BUNDLE_LOADER = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -411,7 +411,7 @@
 		D5A6CF8419DDE5F6000C359A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "build/Release-iphoneos/DJKSwiftFlipper.app/DJKSwiftFlipper";
+				BUNDLE_LOADER = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
