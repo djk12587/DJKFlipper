@@ -15,7 +15,9 @@ class StaticView: CATransformLayer {
         self.frame = frame
         self.addSublayer(leftSide)
         self.addSublayer(rightSide)
-        self.zPosition = -3000
+        
+        self.zPosition = -1_000_000
+        println(self.zPosition)
     }
     
     override init() {
@@ -26,9 +28,19 @@ class StaticView: CATransformLayer {
         var lSide = CALayer(layer: self)
         
         var frame = self.bounds
+        frame.size.width = frame.size.width / 2
+        frame.origin.x = 0
         lSide.frame = frame
         lSide.contentsScale = UIScreen.mainScreen().scale
         lSide.backgroundColor = UIColor.purpleColor().CGColor
+        
+//        var gradient = CAGradientLayer(layer: lSide)
+//        gradient.frame = lSide.bounds
+//        let colorArray = NSArray(objects: UIColor.blackColor().CGColor,UIColor.clearColor().CGColor)
+//        gradient.colors = colorArray
+//        gradient.endPoint = CGPointMake(1, 0.5)
+//        gradient.startPoint = CGPointMake(0, 0.5)
+//        lSide.mask = gradient
         
         return lSide
     }()
@@ -49,7 +61,7 @@ class StaticView: CATransformLayer {
         self.addSublayer(leftSide)
         self.addSublayer(rightSide)
     }
-    
+
     override init(layer: AnyObject!) {
         super.init(layer: layer)
         self.addSublayer(leftSide)
@@ -59,14 +71,24 @@ class StaticView: CATransformLayer {
     func updateFrame(newFrame:CGRect) {
         self.frame = newFrame
         updatePageLayerFrames(newFrame)
+        
+//        var gradient = CAGradientLayer(layer: leftSide)
+//        gradient.frame = leftSide.bounds
+//        let colorArray = NSArray(objects: UIColor.blackColor().CGColor,UIColor.clearColor().CGColor)
+//        gradient.colors = colorArray
+//        gradient.startPoint = CGPointMake(1, 0.5)
+//        gradient.endPoint = CGPointMake(0, 0.5)
+//        
+//        leftSide.mask = gradient
+        
     }
     
     private func updatePageLayerFrames(newFrame:CGRect) {
-        var frame = self.bounds
-        
-        leftSide.frame = newFrame
+        var frame = newFrame
         
         frame.size.width = frame.size.width / 2
+        leftSide.frame = frame
+        
         frame.origin.x = frame.size.width
         rightSide.frame = frame
     }
@@ -85,9 +107,11 @@ class StaticView: CATransformLayer {
     func setLeftSide(image:UIImage) {
         var tmpImageRef = image.CGImage
         
+        var leftImgRef = CGImageCreateWithImageInRect(tmpImageRef, CGRectMake(0, 0, image.size.width/2 * UIScreen.mainScreen().scale, image.size.height * UIScreen.mainScreen().scale))
+        
         CATransaction.begin()
         CATransaction.setAnimationDuration(0)
-        leftSide.contents = image.CGImage
+        leftSide.contents = leftImgRef
         CATransaction.commit()
     }
     

@@ -26,6 +26,7 @@ enum FlipAnimationStatus {
     case FlipAnimationStatusBeginning
     case FlipAnimationStatusActive
     case FlipAnimationStatusCompleting
+    case FlipAnimationStatusComplete
     case FlipAnimationStatusInterrupt
     case FlipAnimationStatusFail
 }
@@ -45,6 +46,7 @@ class AnimationLayer: CATransformLayer {
         fLayer.backgroundColor = UIColor.cyanColor().CGColor
         
         self.addSublayer(fLayer)
+//        CATransaction.flush()
         return fLayer
     }()
     
@@ -57,6 +59,7 @@ class AnimationLayer: CATransformLayer {
         bLayer.backgroundColor = UIColor.greenColor().CGColor
         
         self.addSublayer(bLayer)
+//        CATransaction.flush()
         return bLayer
     }()
 
@@ -88,6 +91,9 @@ class AnimationLayer: CATransformLayer {
             flipProperties.endFlipAngle = 0
             self.transform = CATransform3DMakeRotation(CGFloat(M_PI), 0, 1, 0);
         } else {
+            flipProperties.currentAngle = 0
+            flipProperties.startAngle = 0
+            flipProperties.endFlipAngle = CGFloat(-M_PI)
             self.transform = CATransform3DMakeRotation(CGFloat(0), 0, 1, 0);
         }
     }
@@ -95,8 +101,10 @@ class AnimationLayer: CATransformLayer {
     func setFrontLayer(image:UIImage) {
         var tmpImageRef = image.CGImage
         var rightImgRef = CGImageCreateWithImageInRect(tmpImageRef, CGRectMake(image.size.width/2 * UIScreen.mainScreen().scale, 0, image.size.width/2 * UIScreen.mainScreen().scale, image.size.height * UIScreen.mainScreen().scale))
+
         
         frontLayer.contents = rightImgRef
+
     }
     
     func setBackLayer(image:UIImage) {
@@ -104,5 +112,6 @@ class AnimationLayer: CATransformLayer {
         var rightImgRef = CGImageCreateWithImageInRect(tmpImageRef, CGRectMake(0, 0, image.size.width/2 * UIScreen.mainScreen().scale, image.size.height * UIScreen.mainScreen().scale))
         
         backLayer.contents = rightImgRef
+
     }
 }
