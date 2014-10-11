@@ -312,9 +312,8 @@ class Flipper: UIView {
                         
                         if animationLayer.flipDirection == FlipDirection.FlipDirectionLeft {
                             
-                            if animationLayer.isFirstOrLastPage == true {
+                            if animationLayer.isFirstOrLastPage == true && animationArray.count <= 1 {
                                 staticView.setLeftSide(dataSource!.imageForPage(currentPage, fipper: self))
-                                //staticView.setRightSide(dataSource!.imageForPage(currentPage, fipper: self))
                             } else {
 //                                println("update static left flip")
                                 if flipperStatus == FlipperStatus.FlipperStatusBeginning {
@@ -324,9 +323,8 @@ class Flipper: UIView {
                             }
                             
                         } else {
-                            if animationLayer.isFirstOrLastPage == true {
-                                //staticView.setLeftSide(dataSource!.imageForPage(currentPage, fipper: self))
-                                staticView.setRightSide(dataSource!.imageForPage(currentPage, fipper: self))
+                            if animationLayer.isFirstOrLastPage == true && animationArray.count <= 1 {
+                                    staticView.setRightSide(dataSource!.imageForPage(currentPage, fipper: self))
                             } else {
 //                                println("update static right flip")
                                 if flipperStatus == FlipperStatus.FlipperStatusBeginning {
@@ -335,7 +333,6 @@ class Flipper: UIView {
                                 staticView.setLeftSide(dataSource!.imageForPage(currentPage, fipper: self))
                             }
                         }
-
 
                         self.layer.addSublayer(animationLayer)
                         CATransaction.flush()
@@ -423,7 +420,7 @@ class Flipper: UIView {
         
         var newAngle:CGFloat = page.flipProperties.startAngle + progress * (page.flipProperties.endFlipAngle - page.flipProperties.startAngle)
         var duration:CGFloat
-        var durationConstant:CGFloat = 0.75
+        var durationConstant:CGFloat = 4.75
         
         if page.isFirstOrLastPage == true {
             durationConstant = 0.5
@@ -457,7 +454,6 @@ class Flipper: UIView {
         CATransaction.setAnimationDuration(CFTimeInterval(duration))
         
         if clearFlip {
-
             weak var weakSelf = self
             CATransaction.setCompletionBlock { () -> Void in
                 
