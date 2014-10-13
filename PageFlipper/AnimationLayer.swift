@@ -46,7 +46,6 @@ class AnimationLayer: CATransformLayer {
         fLayer.backgroundColor = UIColor.cyanColor().CGColor
         
         self.addSublayer(fLayer)
-//        CATransaction.flush()
         return fLayer
     }()
     
@@ -59,7 +58,6 @@ class AnimationLayer: CATransformLayer {
         bLayer.backgroundColor = UIColor.greenColor().CGColor
         
         self.addSublayer(bLayer)
-//        CATransaction.flush()
         return bLayer
     }()
 
@@ -102,9 +100,7 @@ class AnimationLayer: CATransformLayer {
         var tmpImageRef = image.CGImage
         var rightImgRef = CGImageCreateWithImageInRect(tmpImageRef, CGRectMake(image.size.width/2 * UIScreen.mainScreen().scale, 0, image.size.width/2 * UIScreen.mainScreen().scale, image.size.height * UIScreen.mainScreen().scale))
 
-        
         frontLayer.contents = rightImgRef
-
     }
     
     func setBackLayer(image:UIImage) {
@@ -112,6 +108,5 @@ class AnimationLayer: CATransformLayer {
         var rightImgRef = CGImageCreateWithImageInRect(tmpImageRef, CGRectMake(0, 0, image.size.width/2 * UIScreen.mainScreen().scale, image.size.height * UIScreen.mainScreen().scale))
         
         backLayer.contents = rightImgRef
-
     }
 }

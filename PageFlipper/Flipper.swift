@@ -22,6 +22,8 @@ protocol FlipperDataSource {
 
 class Flipper: UIView {
     
+    //MARK: - Class properties
+    
     var backgroundView:UIView!
     
     lazy var staticView:StaticView = {
@@ -39,14 +41,6 @@ class Flipper: UIView {
         set {
             var oldPage = self._currentPage
             self._currentPage = newValue
-            
-            if oldPage > self._currentPage {
-                //page flip right
-            } else if oldPage < self._currentPage{
-                //page flip left
-            } else {
-                //no page change
-            }
         }
     }
     
@@ -70,6 +64,8 @@ class Flipper: UIView {
     
     var animationArray:NSMutableArray = NSMutableArray()
     
+    //MARK: - Initializers
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -91,50 +87,7 @@ class Flipper: UIView {
         }
     }
     
-    func getAndAddNewBackground() {
-        self.backgroundView = self.dataSource!.viewForPage(self.currentPage, flipper: self)
-        self.addSubview(self.backgroundView)
-        
-        //set up the constraints
-        self.backgroundView.setTranslatesAutoresizingMaskIntoConstraints(false)
-        var viewDictionary = ["backgroundView":self.backgroundView]
-        var constraintTop = NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[backgroundView]-0-|", options: NSLayoutFormatOptions.AlignAllTop, metrics: nil, views: viewDictionary)
-        var constraintLeft = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[backgroundView]-0-|", options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: viewDictionary)
-        
-        self.addConstraints(constraintTop)
-        self.addConstraints(constraintLeft)
-    }
-    
-    func getHighestAnimationLayer() -> AnimationLayer? {
-        let descriptors = NSArray(array: [NSSortDescriptor(key: "zPosition", ascending: false)])
-        let sortedArray = animationArray.sortedArrayUsingDescriptors(descriptors)
-        
-        if sortedArray.count > 0 {
-            let animationLayer = sortedArray.first as AnimationLayer
-            println("current HighestZ \(animationLayer.zPosition)")
-            return animationLayer
-        } else {
-            println("no HighestZ")
-            return nil
-        }
-    }
-    
-    func getAnimationLayersFromDirection(flipDirection:FlipDirection) -> NSMutableArray {
-        
-        var array = NSMutableArray()
-        
-        for animLayer in animationArray {
-            var animationLayer = animLayer as AnimationLayer
-            if animationLayer.flipDirection == flipDirection {
-                array.addObject(animationLayer)
-            }
-        }
-        
-        let descriptors = NSArray(array: [NSSortDescriptor(key: "zPosition", ascending: false)])
-        let sortedArray = array.sortedArrayUsingDescriptors(descriptors)
-    
-        return NSMutableArray(array: sortedArray)
-    }
+    //MARK: - Handle the Pan Gesture
     
     func pan(gesture:UIPanGestureRecognizer) {
 
@@ -143,46 +96,18 @@ class Flipper: UIView {
         
         switch (gesture.state) {
         case UIGestureRecognizerState.Began:
-            
-            var passedHalfWay = false
 
-            if flipperStatus == FlipperStatus.FlipperStatusInactive {
-                passedHalfWay = true
-            } else if animationArray.count > 0 {
-                //LOOP through this and check the new animation layer with current animations to make sure we dont allow the same animation to happen on a flip up
-                for animLayer in animationArray {
-                    var animationLayer = animLayer as AnimationLayer
-                    var layerIsPassedHalfway = false
-                    
-                    var rotationX = animationLayer.presentationLayer().valueForKeyPath("transform.rotation.x") as CGFloat
-                    
-                    if animationLayer.flipDirection == FlipDirection.FlipDirectionRight && rotationX > 0 {
-                        layerIsPassedHalfway = true
-                    } else if animationLayer.flipDirection == FlipDirection.FlipDirectionLeft && rotationX == 0 {
-                        layerIsPassedHalfway = true
-                    }
-                    
-                    if layerIsPassedHalfway == false {
-                        passedHalfWay = false
-                        break
-                    } else {
-                        passedHalfWay = true
-                    }
-                }
-            }
-            
-            println("all clear for new layer \(passedHalfWay)")
-            if passedHalfWay == true {
+            if checkIfAnimationsArePassedHalfway() == true {
             
                 if flipperStatus == FlipperStatus.FlipperStatusInactive {
                     flipperStatus = FlipperStatus.FlipperStatusBeginning
                 }
                 
+                //check to see if the previous animationlayer was not set
                 var createFlipLayer = true
                 if animationArray.count > 0 {
                     if var previousAnimationLayer = animationArray.lastObject as? AnimationLayer {
                         if previousAnimationLayer.flipDirection == FlipDirection.FlipDirectionNotSet || previousAnimationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusBeginning {
-                            println("removed layer atbeginning")
                             animationArray.removeObject(previousAnimationLayer)
                             previousAnimationLayer.removeFromSuperlayer()
                             CATransaction.flush()
@@ -202,15 +127,12 @@ class Flipper: UIView {
                     } else {
                         animationLayer.zPosition = 0
                     }
-                    
-                    println("new zPosition \(animationLayer.zPosition)")
+
                     animationArray.addObject(animationLayer)
                 }
             } else {
                 gesture.enabled = false
             }
-
-            println("began")
             
         case UIGestureRecognizerState.Changed:
             
@@ -218,7 +140,6 @@ class Flipper: UIView {
             
             if var animationLayer = animationArray.lastObject as? AnimationLayer {
                 if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusBeginning {
-                    println("changed for new flip beginning")
                     
                     if translation > 0 {
                         animationLayer.updateFlipDirection(FlipDirection.FlipDirectionRight)
@@ -241,7 +162,6 @@ class Flipper: UIView {
                             if highestAnimationLayer.flipDirection != animationLayer.flipDirection && highestAnimationLayer.isFirstOrLastPage == false {
                                 animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusFail
                                 
-                                println("conflict")
                                 var zPos = animationLayer.bounds.size.height
                                 
                                 if let highestZPosAnimLayer = getHighestAnimationLayer() {
@@ -258,8 +178,6 @@ class Flipper: UIView {
                                 animationLayer.zPosition = zPos
                                 CATransaction.commit()
                                 
-                                println("updated z \(animationLayer.zPosition)")
-                                
                                 animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusInterrupt
                                 
                                 if highestAnimationLayer.flipDirection == FlipDirection.FlipDirectionLeft {
@@ -270,8 +188,6 @@ class Flipper: UIView {
                                     currentPage = currentPage + 1
                                     animationLayer.updateFlipDirection(FlipDirection.FlipDirectionLeft)
                                     flipPage(animationLayer, progress: 1.0, animated: true, clearFlip: true)
-                                } else {
-                                    println("AHHHHH")
                                 }
                             }
                         }
@@ -315,7 +231,6 @@ class Flipper: UIView {
                             if animationLayer.isFirstOrLastPage == true && animationArray.count <= 1 {
                                 staticView.setLeftSide(dataSource!.imageForPage(currentPage, fipper: self))
                             } else {
-//                                println("update static left flip")
                                 if flipperStatus == FlipperStatus.FlipperStatusBeginning {
                                     staticView.setLeftSide(dataSource!.imageForPage(currentPage - 1, fipper: self))
                                 }
@@ -324,16 +239,15 @@ class Flipper: UIView {
                             
                         } else {
                             if animationLayer.isFirstOrLastPage == true && animationArray.count <= 1 {
-                                    staticView.setRightSide(dataSource!.imageForPage(currentPage, fipper: self))
+                                staticView.setRightSide(dataSource!.imageForPage(currentPage, fipper: self))
                             } else {
-//                                println("update static right flip")
                                 if flipperStatus == FlipperStatus.FlipperStatusBeginning {
                                     staticView.setRightSide(dataSource!.imageForPage(currentPage + 1, fipper: self))
                                 }
                                 staticView.setLeftSide(dataSource!.imageForPage(currentPage, fipper: self))
                             }
                         }
-
+                        
                         self.layer.addSublayer(animationLayer)
                         CATransaction.flush()
                         //if the user is swiping the screen with a lot of velocity just perform the entire animation at once
@@ -375,18 +289,23 @@ class Flipper: UIView {
             }
             
         case UIGestureRecognizerState.Ended:
-            println("ended")
             if var animationLayer = animationArray.lastObject as? AnimationLayer {
                 if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusActive {
                     animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusCompleting
                     
                     var releaseSpeed:CGFloat = (translation + gesture.velocityInView(self).x/4) / self.bounds.size.width
                     var speedThreshold:CGFloat = 0.5
+                                        
+                    var flipToNewPage = false
+                    if animationLayer.flipDirection == FlipDirection.FlipDirectionLeft && fabs(releaseSpeed) > speedThreshold && !animationLayer.isFirstOrLastPage && releaseSpeed < 0 {
+                        flipToNewPage = true
+                    } else if animationLayer.flipDirection == FlipDirection.FlipDirectionRight && fabs(releaseSpeed) > speedThreshold && !animationLayer.isFirstOrLastPage && releaseSpeed > 0{
+                        flipToNewPage = true
+                    }
                     
-                    if fabs(releaseSpeed) > speedThreshold && !animationLayer.isFirstOrLastPage {
+                    if flipToNewPage == true {
                         flipPage(animationLayer, progress: 1.0, animated: true, clearFlip: true)
                     } else {
-                        
                         if !animationLayer.isFirstOrLastPage {
                             if animationLayer.flipDirection == FlipDirection.FlipDirectionLeft {
                                 animationLayer.flipDirection = FlipDirection.FlipDirectionRight
@@ -399,11 +318,12 @@ class Flipper: UIView {
                         
                         flipPage(animationLayer, progress: 0.0, animated: true, clearFlip: true)
                     }
+
                 } else if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusBeginning || animationLayer.flipDirection == FlipDirection.FlipDirectionNotSet {
+                    //precautionary if pan gesture never goes to the changed state
                     animationArray.removeObject(animationLayer)
                     animationLayer.removeFromSuperlayer()
                     CATransaction.flush()
-                    println("ended and still beginning")
                 }
             }
             
@@ -416,11 +336,13 @@ class Flipper: UIView {
         }
     }
     
+    //MARK: - Flip Animation Method
+    
     func flipPage(page:AnimationLayer,progress:CGFloat,animated:Bool,clearFlip:Bool) {
         
         var newAngle:CGFloat = page.flipProperties.startAngle + progress * (page.flipProperties.endFlipAngle - page.flipProperties.startAngle)
         var duration:CGFloat
-        var durationConstant:CGFloat = 4.75
+        var durationConstant:CGFloat = 0.75
         
         if page.isFirstOrLastPage == true {
             durationConstant = 0.5
@@ -497,5 +419,84 @@ class Flipper: UIView {
 
         page.transform = t
         CATransaction.commit()
+    }
+}
+
+
+//MARK: - Flipper Helper Methods
+extension Flipper {
+    
+    func checkIfAnimationsArePassedHalfway() -> Bool{
+        var passedHalfWay = false
+        
+        if flipperStatus == FlipperStatus.FlipperStatusInactive {
+            passedHalfWay = true
+        } else if animationArray.count > 0 {
+            //LOOP through this and check the new animation layer with current animations to make sure we dont allow the same animation to happen on a flip up
+            for animLayer in animationArray {
+                var animationLayer = animLayer as AnimationLayer
+                var layerIsPassedHalfway = false
+                
+                var rotationX = animationLayer.presentationLayer().valueForKeyPath("transform.rotation.x") as CGFloat
+                
+                if animationLayer.flipDirection == FlipDirection.FlipDirectionRight && rotationX > 0 {
+                    layerIsPassedHalfway = true
+                } else if animationLayer.flipDirection == FlipDirection.FlipDirectionLeft && rotationX == 0 {
+                    layerIsPassedHalfway = true
+                }
+                
+                if layerIsPassedHalfway == false {
+                    passedHalfWay = false
+                    break
+                } else {
+                    passedHalfWay = true
+                }
+            }
+        }
+        
+        return passedHalfWay
+    }
+    
+    func getAndAddNewBackground() {
+        self.backgroundView = self.dataSource!.viewForPage(self.currentPage, flipper: self)
+        self.addSubview(self.backgroundView)
+        
+        //set up the constraints
+        self.backgroundView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        var viewDictionary = ["backgroundView":self.backgroundView]
+        var constraintTop = NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[backgroundView]-0-|", options: NSLayoutFormatOptions.AlignAllTop, metrics: nil, views: viewDictionary)
+        var constraintLeft = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[backgroundView]-0-|", options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: viewDictionary)
+        
+        self.addConstraints(constraintTop)
+        self.addConstraints(constraintLeft)
+    }
+    
+    func getHighestAnimationLayer() -> AnimationLayer? {
+        let descriptors = NSArray(array: [NSSortDescriptor(key: "zPosition", ascending: false)])
+        let sortedArray = animationArray.sortedArrayUsingDescriptors(descriptors)
+        
+        if sortedArray.count > 0 {
+            let animationLayer = sortedArray.first as AnimationLayer
+            return animationLayer
+        } else {
+            return nil
+        }
+    }
+    
+    func getAnimationLayersFromDirection(flipDirection:FlipDirection) -> NSMutableArray {
+        
+        var array = NSMutableArray()
+        
+        for animLayer in animationArray {
+            var animationLayer = animLayer as AnimationLayer
+            if animationLayer.flipDirection == flipDirection {
+                array.addObject(animationLayer)
+            }
+        }
+        
+        let descriptors = NSArray(array: [NSSortDescriptor(key: "zPosition", ascending: false)])
+        let sortedArray = array.sortedArrayUsingDescriptors(descriptors)
+        
+        return NSMutableArray(array: sortedArray)
     }
 }

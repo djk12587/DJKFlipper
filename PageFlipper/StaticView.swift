@@ -17,7 +17,6 @@ class StaticView: CATransformLayer {
         self.addSublayer(rightSide)
         
         self.zPosition = -1_000_000
-        println(self.zPosition)
     }
     
     override init() {

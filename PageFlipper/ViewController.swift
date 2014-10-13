@@ -30,15 +30,15 @@ class ViewController: UIViewController, FlipperDataSource {
         
         var page4 = PageTestViewController(nibName: "PageTestViewController", bundle: nil)
         page4.view.frame = self.view.bounds
-        page4.backgroundImage.image = UIImage(named: "page1")
+        page4.backgroundImage.image = UIImage(named: "page4")
         
         var page5 = PageTestViewController(nibName: "PageTestViewController", bundle: nil)
         page5.view.frame = self.view.bounds
-        page5.backgroundImage.image = UIImage(named: "page2")
+        page5.backgroundImage.image = UIImage(named: "page5")
         
         var page6 = PageTestViewController(nibName: "PageTestViewController", bundle: nil)
         page6.view.frame = self.view.bounds
-        page6.backgroundImage.image = UIImage(named: "page3")
+        page6.backgroundImage.image = UIImage(named: "page6")
         
         imageAndViewarray = [(page1.view,page1.view.takeSnapshot()),(page2.view,page2.view.takeSnapshot()),(page3.view,page3.view.takeSnapshot()),(page4.view,page4.view.takeSnapshot()),(page5.view,page5.view.takeSnapshot()),(page6.view,page6.view.takeSnapshot())]
         
