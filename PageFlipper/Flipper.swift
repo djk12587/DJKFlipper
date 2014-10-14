@@ -71,12 +71,17 @@ class Flipper: UIView {
         
         var panGesture = UIPanGestureRecognizer(target: self, action: "pan:")
         self.addGestureRecognizer(panGesture)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "willResignActive", name: UIApplicationWillResignActiveNotification, object: nil)
+        
     }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         var panGesture = UIPanGestureRecognizer(target: self, action: "pan:")
         self.addGestureRecognizer(panGesture)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "willResignActive", name: UIApplicationWillResignActiveNotification, object: nil)
     }
     
     override func layoutSublayersOfLayer(layer: CALayer!) {
@@ -85,6 +90,10 @@ class Flipper: UIView {
         if staticView.bounds != self.bounds {
             staticView.updateFrame(self.bounds)
         }
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillResignActiveNotification, object: nil)
     }
     
     //MARK: - Handle the Pan Gesture
@@ -425,6 +434,28 @@ class Flipper: UIView {
 
 //MARK: - Flipper Helper Methods
 extension Flipper {
+    
+    func willResignActive() {
+        if flipperStatus != FlipperStatus.FlipperStatusInactive {
+            //remove all animation layers and remove the static view
+            getAndAddNewBackground()
+            
+            var pendingAnimations = NSMutableArray(array: animationArray)
+            for animation in animationArray {
+                var animationLayer = animation as AnimationLayer
+                animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusFail
+                animationLayer.removeFromSuperlayer()
+            }
+            animationArray.removeAllObjects()
+            
+            self.staticView.removeFromSuperlayer()
+            CATransaction.flush()
+            self.staticView.leftSide.contents = nil
+            self.staticView.rightSide.contents = nil
+            
+            flipperStatus = FlipperStatus.FlipperStatusInactive
+        }
+    }
     
     func checkIfAnimationsArePassedHalfway() -> Bool{
         var passedHalfWay = false
