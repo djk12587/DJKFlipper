@@ -92,7 +92,7 @@ class StaticView: CATransformLayer {
         rightSide.frame = frame
     }
     
-    func rightSide(image:UIImage) {
+    func setTheRightSide(image:UIImage) {
         
         var tmpImageRef = image.CGImage
         var rightImgRef = CGImageCreateWithImageInRect(tmpImageRef, CGRectMake(image.size.width/2 * UIScreen.mainScreen().scale, 0, image.size.width/2 * UIScreen.mainScreen().scale, image.size.height * UIScreen.mainScreen().scale))
@@ -103,7 +103,7 @@ class StaticView: CATransformLayer {
         CATransaction.commit()
     }
     
-    func leftSide(image:UIImage) {
+    func setTheLeftSide(image:UIImage) {
         var tmpImageRef = image.CGImage
         
         var leftImgRef = CGImageCreateWithImageInRect(tmpImageRef, CGRectMake(0, 0, image.size.width/2 * UIScreen.mainScreen().scale, image.size.height * UIScreen.mainScreen().scale))

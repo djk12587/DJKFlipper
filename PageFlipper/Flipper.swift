@@ -76,7 +76,7 @@ class Flipper: UIView {
         
         if let var gestures = self.gestureRecognizers {
             for gesture in gestures {
-                var tempGesture = gesture as UIPanGestureRecognizer
+                var tempGesture = gesture as! UIPanGestureRecognizer
                 tempGesture.enabled = true
             }
         }
@@ -85,7 +85,7 @@ class Flipper: UIView {
     func disablePanGesture() {
         if let var gestures = self.gestureRecognizers {
             for gesture in gestures {
-                var tempGesture = gesture as UIPanGestureRecognizer
+                var tempGesture = gesture as! UIPanGestureRecognizer
                 tempGesture.enabled = false
             }
         }
@@ -266,16 +266,16 @@ class Flipper: UIView {
                                 //we are at the end
                                 animationLayer.flipProperties.endFlipAngle = -1.5
                                 animationLayer.isFirstOrLastPage = true
-                                animationLayer.frontLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                animationLayer.setTheFrontLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
                             } else {
                                 //next page flip
                                 if var currentScreenShot = currentPageScreenShot {
-                                    animationLayer.frontLayer(currentScreenShot)
+                                    animationLayer.setTheFrontLayer(currentScreenShot)
                                 } else {
-                                    animationLayer.frontLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                    animationLayer.setTheFrontLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
                                 }
                                 currentPage = currentPage + 1
-                                animationLayer.backLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                animationLayer.setTheBackLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
                             }
                         case FlipDirection.FlipDirectionRight:
                             if currentPage - 1 < 0 {
@@ -283,21 +283,21 @@ class Flipper: UIView {
                                 animationLayer.isFirstOrLastPage = true
                                 
                                 if var currentScreenShot = currentPageScreenShot {
-                                    animationLayer.backLayer(currentScreenShot)
+                                    animationLayer.setTheBackLayer(currentScreenShot)
                                 } else {
-                                    animationLayer.backLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                    animationLayer.setTheBackLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
                                 }
 
                             } else {
                                 //previous page flip
                                 
                                 if var currentScreenShot = currentPageScreenShot {
-                                    animationLayer.backLayer(currentPageScreenShot!)
+                                    animationLayer.setTheBackLayer(currentPageScreenShot!)
                                 } else {
-                                    animationLayer.backLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                    animationLayer.setTheBackLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
                                 }
                                 currentPage = currentPage - 1
-                                animationLayer.backLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                animationLayer.setTheFrontLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
                             }
                         }
                         
@@ -306,38 +306,38 @@ class Flipper: UIView {
                         if animationLayer.flipDirection == FlipDirection.FlipDirectionLeft {
                             
                             if animationLayer.isFirstOrLastPage == true && animationArray.count <= 1 {
-                                staticView.leftSide(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                staticView.setTheLeftSide(dataSource!.imageForPage(currentPage, fipper: self)!)
                             } else {
                                 if flipperStatus == FlipperStatus.FlipperStatusBeginning {
                                     
                                     if var currentScreenShot = currentPageScreenShot {
-                                        staticView.leftSide(currentScreenShot)
+                                        staticView.setTheLeftSide(currentScreenShot)
                                     } else {
-                                        staticView.leftSide(dataSource!.imageForPage(currentPage - 1, fipper: self)!)
+                                        staticView.setTheLeftSide(dataSource!.imageForPage(currentPage - 1, fipper: self)!)
                                     }
                                 }
-                                staticView.rightSide(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                staticView.setTheRightSide(dataSource!.imageForPage(currentPage, fipper: self)!)
                             }
                             
                         } else {
                             if animationLayer.isFirstOrLastPage == true && animationArray.count <= 1 {
                                 
                                 if var currentScreenShot = currentPageScreenShot {
-                                    staticView.rightSide(currentScreenShot)
+                                    staticView.setTheRightSide(currentScreenShot)
                                 } else {
-                                    staticView.rightSide(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                    staticView.setTheRightSide(dataSource!.imageForPage(currentPage, fipper: self)!)
                                 }
 
                             } else {
                                 if flipperStatus == FlipperStatus.FlipperStatusBeginning {
                                     
                                     if var currentScreenShot = currentPageScreenShot {
-                                        staticView.rightSide(currentScreenShot)
+                                        staticView.setTheRightSide(currentScreenShot)
                                     } else {
-                                        staticView.rightSide(dataSource!.imageForPage(currentPage + 1, fipper: self)!)
+                                        staticView.setTheRightSide(dataSource!.imageForPage(currentPage + 1, fipper: self)!)
                                     }
                                 }
-                                staticView.leftSide(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                staticView.setTheLeftSide(dataSource!.imageForPage(currentPage, fipper: self)!)
                             }
                         }
                         
@@ -529,7 +529,7 @@ extension Flipper {
             
             var pendingAnimations = NSMutableArray(array: animationArray)
             for animation in animationArray {
-                var animationLayer = animation as AnimationLayer
+                var animationLayer = animation as! AnimationLayer
                 animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusFail
                 animationLayer.removeFromSuperlayer()
             }
@@ -552,10 +552,10 @@ extension Flipper {
         } else if animationArray.count > 0 {
             //LOOP through this and check the new animation layer with current animations to make sure we dont allow the same animation to happen on a flip up
             for animLayer in animationArray {
-                var animationLayer = animLayer as AnimationLayer
+                var animationLayer = animLayer as! AnimationLayer
                 var layerIsPassedHalfway = false
                 
-                var rotationX = animationLayer.presentationLayer().valueForKeyPath("transform.rotation.x") as CGFloat
+                var rotationX = animationLayer.presentationLayer().valueForKeyPath("transform.rotation.x") as! CGFloat
                 
                 if animationLayer.flipDirection == FlipDirection.FlipDirectionRight && rotationX > 0 {
                     layerIsPassedHalfway = true
@@ -610,7 +610,7 @@ extension Flipper {
         let sortedArray = animationArray.sortedArrayUsingDescriptors(descriptors as [AnyObject])
         
         if sortedArray.count > 0 {
-            let animationLayer = sortedArray.first as AnimationLayer
+            let animationLayer = sortedArray.first as! AnimationLayer
             return animationLayer
         } else {
             return nil
@@ -622,7 +622,7 @@ extension Flipper {
         var array = NSMutableArray()
         
         for animLayer in animationArray {
-            var animationLayer = animLayer as AnimationLayer
+            var animationLayer = animLayer as! AnimationLayer
             if animationLayer.flipDirection == flipDirection {
                 array.addObject(animationLayer)
             }
