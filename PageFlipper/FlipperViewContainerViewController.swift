@@ -13,8 +13,8 @@ class FlipperViewContainerViewController: UIViewController, FlipperDataSource {
     @IBOutlet weak var flipView: Flipper!
     
     //instantiate flipper protocol properties
-    var flipperViewArray:NSMutableArray = NSMutableArray()
-    lazy var flipperSnapshotArray:NSMutableArray? = NSMutableArray()
+    var flipperViewArray:[UIViewController] = []
+    lazy var flipperSnapshotArray:[UIImage]? = []
     var containerViewController:UIViewController?
     
     override func viewDidLoad() {
@@ -57,12 +57,14 @@ class FlipperViewContainerViewController: UIViewController, FlipperDataSource {
         page6.view.layoutSubviews()
         
         //add the view controllers to the flipperViewArray
-        flipperViewArray.addObjectsFromArray([page1,page2,page3,page4,page5,page6])
+        flipperViewArray += [page1,page2,page3,page4,page5,page6]
+//        flipperViewArray.addObjectsFromArray([page1,page2,page3,page4,page5,page6])
+        
         
         //take an initial screenShot of all of the flippable view controllers
         for viewController in flipperViewArray {
             let flipView = viewController as PageTestViewController
-            flipperSnapshotArray?.addObject(flipView.view.takeSnapshot())
+            flipperSnapshotArray?.append(flipView.view.takeSnapshot())
         }
         
         //set the delegate and containerViewController
@@ -81,7 +83,7 @@ class FlipperViewContainerViewController: UIViewController, FlipperDataSource {
     }
     
     func imageForPage(page: NSInteger, fipper: Flipper) -> UIImage? {
-        if var snapShot = flipperSnapshotArray?[page] as? UIImage {
+        if var snapShot = flipperSnapshotArray?[page] {
             return snapShot
         } else {
             return nil

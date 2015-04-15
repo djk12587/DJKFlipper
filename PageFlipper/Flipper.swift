@@ -19,8 +19,8 @@ enum FlipperStatus {
     func imageForPage(page:NSInteger, fipper:Flipper) -> UIImage?
     func viewForPage(page:NSInteger, flipper:Flipper) -> UIView
     
-    var flipperViewArray:NSMutableArray { get set }
-    var flipperSnapshotArray:NSMutableArray? { get set }
+    var flipperViewArray:[UIViewController] { get set }
+    var flipperSnapshotArray:[UIImage]? { get set }
     var containerViewController:UIViewController? { get set }
         
 }
@@ -249,12 +249,13 @@ class Flipper: UIView {
                     if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusBeginning {
                         
 //                        dataSource?.willUpdateBackgroundWithNewView(currentPage, flipper: self)
-                        (dataSource?.flipperViewArray[currentPage] as UIViewController).willMoveToParentViewController(nil)
+                        dataSource?.flipperViewArray[currentPage].willMoveToParentViewController(nil)
                         
                         var currentPageScreenShot = dataSource?.viewForPage(currentPage, flipper: self).takeSnapShotWithoutScreenUpdate()
                         
                         if var currentScreenShot = currentPageScreenShot {
-                            dataSource?.flipperSnapshotArray?.replaceObjectAtIndex(currentPage, withObject: currentScreenShot)
+                            dataSource?.flipperSnapshotArray?.removeAtIndex(currentPage)
+                            dataSource?.flipperSnapshotArray?.insert(currentScreenShot, atIndex: currentPage)
                         }
 
                         switch animationLayer.flipDirection {
@@ -633,12 +634,4 @@ extension Flipper {
         return NSMutableArray(array: sortedArray)
     }
     
-    func updateScreenShot() -> Bool {
-        if var viewToUpdate = _dataSource?.viewForPage(currentPage, flipper: self) {
-            _dataSource?.flipperSnapshotArray?.replaceObjectAtIndex(currentPage, withObject: viewToUpdate.takeSnapshot())
-            return true
-        } else {
-            return false
-        }        
-    }
 }
