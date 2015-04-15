@@ -14,10 +14,15 @@ enum FlipperStatus {
     case FlipperStatusInactive
 }
 
-protocol FlipperDataSource {
+@objc protocol FlipperDataSource {
     func numberOfPages(flipper:Flipper) -> NSInteger
-    func imageForPage(page:NSInteger, fipper:Flipper) -> UIImage
+    func imageForPage(page:NSInteger, fipper:Flipper) -> UIImage?
     func viewForPage(page:NSInteger, flipper:Flipper) -> UIView
+    
+    var flipperViewArray:NSMutableArray { get set }
+    var flipperSnapshotArray:NSMutableArray? { get set }
+    var containerViewController:UIViewController? { get set }
+        
 }
 
 class Flipper: UIView {
@@ -54,8 +59,9 @@ class Flipper: UIView {
             if let data = newValue {
                 numberOfPages = data.numberOfPages(self)
                 currentPage = 0
-                
-                getAndAddNewBackground()
+                if numberOfPages > 0 {
+                    getAndAddNewBackground()
+                }
             }
         }
     }
@@ -64,24 +70,60 @@ class Flipper: UIView {
     
     var animationArray:NSMutableArray = NSMutableArray()
     
+    //MARK: - Class Methods
+    
+    func enablePanGesture() {
+        
+        if let var gestures = self.gestureRecognizers {
+            for gesture in gestures {
+                var tempGesture = gesture as UIPanGestureRecognizer
+                tempGesture.enabled = true
+            }
+        }
+    }
+    
+    func disablePanGesture() {
+        if let var gestures = self.gestureRecognizers {
+            for gesture in gestures {
+                var tempGesture = gesture as UIPanGestureRecognizer
+                tempGesture.enabled = false
+            }
+        }
+    }
+    
+    func setHomePage() {
+        numberOfPages = dataSource!.numberOfPages(self)
+        currentPage = 0
+        self.backgroundView.removeFromSuperview()
+        getAndAddNewBackground()
+    }
+    
     //MARK: - Initializers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        var panGesture = UIPanGestureRecognizer(target: self, action: "pan:")
-        self.addGestureRecognizer(panGesture)
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "willResignActive", name: UIApplicationWillResignActiveNotification, object: nil)
-        
+        helperInit()
     }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        helperInit()
+    }
+    
+    func helperInit() {
         var panGesture = UIPanGestureRecognizer(target: self, action: "pan:")
         self.addGestureRecognizer(panGesture)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "willResignActive", name: UIApplicationWillResignActiveNotification, object: nil)
+        
+        if let tempDatasource = dataSource {
+            numberOfPages = tempDatasource.numberOfPages(self)
+            currentPage = 0
+            
+            getAndAddNewBackground()
+        }
+        
     }
     
     override func layoutSublayersOfLayer(layer: CALayer!) {
@@ -102,7 +144,7 @@ class Flipper: UIView {
 
         var translation = gesture.translationInView(gesture.view!).x
         var progress = translation / gesture.view!.bounds.size.width
-        
+
         switch (gesture.state) {
         case UIGestureRecognizerState.Began:
 
@@ -205,6 +247,16 @@ class Flipper: UIView {
                     //if there is no conflict we create the set the front and back layer sides for the animation layer
                     //we also need to create the static layer that sites below the animation layer
                     if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusBeginning {
+                        
+//                        dataSource?.willUpdateBackgroundWithNewView(currentPage, flipper: self)
+                        (dataSource?.flipperViewArray[currentPage] as UIViewController).willMoveToParentViewController(nil)
+                        
+                        var currentPageScreenShot = dataSource?.viewForPage(currentPage, flipper: self).takeSnapShotWithoutScreenUpdate()
+                        
+                        if var currentScreenShot = currentPageScreenShot {
+                            dataSource?.flipperSnapshotArray?.replaceObjectAtIndex(currentPage, withObject: currentScreenShot)
+                        }
+
                         switch animationLayer.flipDirection {
                         case FlipDirection.FlipDirectionNotSet:
                             println("not set")
@@ -213,23 +265,38 @@ class Flipper: UIView {
                                 //we are at the end
                                 animationLayer.flipProperties.endFlipAngle = -1.5
                                 animationLayer.isFirstOrLastPage = true
-                                animationLayer.setFrontLayer(dataSource!.imageForPage(currentPage, fipper: self))
+                                animationLayer.setFrontLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
                             } else {
                                 //next page flip
-                                animationLayer.setFrontLayer(dataSource!.imageForPage(currentPage, fipper: self))
+                                if var currentScreenShot = currentPageScreenShot {
+                                    animationLayer.setFrontLayer(currentScreenShot)
+                                } else {
+                                    animationLayer.setFrontLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                }
                                 currentPage = currentPage + 1
-                                animationLayer.setBackLayer(dataSource!.imageForPage(currentPage, fipper: self))
+                                animationLayer.setBackLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
                             }
                         case FlipDirection.FlipDirectionRight:
                             if currentPage - 1 < 0 {
                                 animationLayer.flipProperties.endFlipAngle = CGFloat(-M_PI) + 1.5
                                 animationLayer.isFirstOrLastPage = true
-                                animationLayer.setBackLayer(dataSource!.imageForPage(currentPage, fipper: self))
+                                
+                                if var currentScreenShot = currentPageScreenShot {
+                                    animationLayer.setBackLayer(currentScreenShot)
+                                } else {
+                                    animationLayer.setBackLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                }
+
                             } else {
                                 //previous page flip
-                                animationLayer.setBackLayer(dataSource!.imageForPage(currentPage, fipper: self))
+                                
+                                if var currentScreenShot = currentPageScreenShot {
+                                    animationLayer.setBackLayer(currentPageScreenShot!)
+                                } else {
+                                    animationLayer.setBackLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                }
                                 currentPage = currentPage - 1
-                                animationLayer.setFrontLayer(dataSource!.imageForPage(currentPage, fipper: self))
+                                animationLayer.setFrontLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
                             }
                         }
                         
@@ -238,22 +305,38 @@ class Flipper: UIView {
                         if animationLayer.flipDirection == FlipDirection.FlipDirectionLeft {
                             
                             if animationLayer.isFirstOrLastPage == true && animationArray.count <= 1 {
-                                staticView.setLeftSide(dataSource!.imageForPage(currentPage, fipper: self))
+                                staticView.setLeftSide(dataSource!.imageForPage(currentPage, fipper: self)!)
                             } else {
                                 if flipperStatus == FlipperStatus.FlipperStatusBeginning {
-                                    staticView.setLeftSide(dataSource!.imageForPage(currentPage - 1, fipper: self))
+                                    
+                                    if var currentScreenShot = currentPageScreenShot {
+                                        staticView.setLeftSide(currentScreenShot)
+                                    } else {
+                                        staticView.setLeftSide(dataSource!.imageForPage(currentPage - 1, fipper: self)!)
+                                    }
                                 }
-                                staticView.setRightSide(dataSource!.imageForPage(currentPage, fipper: self))
+                                staticView.setRightSide(dataSource!.imageForPage(currentPage, fipper: self)!)
                             }
                             
                         } else {
                             if animationLayer.isFirstOrLastPage == true && animationArray.count <= 1 {
-                                staticView.setRightSide(dataSource!.imageForPage(currentPage, fipper: self))
+                                
+                                if var currentScreenShot = currentPageScreenShot {
+                                    staticView.setRightSide(currentScreenShot)
+                                } else {
+                                    staticView.setRightSide(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                }
+
                             } else {
                                 if flipperStatus == FlipperStatus.FlipperStatusBeginning {
-                                    staticView.setRightSide(dataSource!.imageForPage(currentPage + 1, fipper: self))
+                                    
+                                    if var currentScreenShot = currentPageScreenShot {
+                                        staticView.setRightSide(currentScreenShot)
+                                    } else {
+                                        staticView.setRightSide(dataSource!.imageForPage(currentPage + 1, fipper: self)!)
+                                    }
                                 }
-                                staticView.setLeftSide(dataSource!.imageForPage(currentPage, fipper: self))
+                                staticView.setLeftSide(dataSource!.imageForPage(currentPage, fipper: self)!)
                             }
                         }
                         
@@ -278,6 +361,7 @@ class Flipper: UIView {
                     CATransaction.flush()
                     backgroundView.removeFromSuperview()
                     flipperStatus = FlipperStatus.FlipperStatusActive
+                    
                 }
                 
                 if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusActive {
@@ -298,6 +382,7 @@ class Flipper: UIView {
             }
             
         case UIGestureRecognizerState.Ended:
+//            println("ended")
             if var animationLayer = animationArray.lastObject as? AnimationLayer {
                 if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusActive {
                     animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusCompleting
@@ -338,6 +423,7 @@ class Flipper: UIView {
             
         case UIGestureRecognizerState.Cancelled:
             gesture.enabled = true
+            println("canceled")
         case UIGestureRecognizerState.Failed:
             println("failed")
         case UIGestureRecognizerState.Possible:
@@ -483,12 +569,15 @@ extension Flipper {
                     passedHalfWay = true
                 }
             }
+        } else {
+            passedHalfWay = true
         }
         
         return passedHalfWay
     }
     
     func getAndAddNewBackground() {
+
         self.backgroundView = self.dataSource!.viewForPage(self.currentPage, flipper: self)
         self.addSubview(self.backgroundView)
         
@@ -500,6 +589,19 @@ extension Flipper {
         
         self.addConstraints(constraintTop)
         self.addConstraints(constraintLeft)
+        
+        if var theDataSource = dataSource {
+            if theDataSource.flipperViewArray[currentPage].childViewControllers.count > 0 {
+                (theDataSource.flipperViewArray[currentPage] as UIViewController).removeFromParentViewController()
+            }
+            
+            if var containerViewController = theDataSource.containerViewController {
+                containerViewController.addChildViewController(theDataSource.flipperViewArray[currentPage] as UIViewController)
+                (theDataSource.flipperViewArray[currentPage] as UIViewController).didMoveToParentViewController(containerViewController)
+            }
+            
+        }
+        
     }
     
     func getHighestAnimationLayer() -> AnimationLayer? {
@@ -529,5 +631,14 @@ extension Flipper {
         let sortedArray = array.sortedArrayUsingDescriptors(descriptors)
         
         return NSMutableArray(array: sortedArray)
+    }
+    
+    func updateScreenShot() -> Bool {
+        if var viewToUpdate = _dataSource?.viewForPage(currentPage, flipper: self) {
+            _dataSource?.flipperSnapshotArray?.replaceObjectAtIndex(currentPage, withObject: viewToUpdate.takeSnapshot())
+            return true
+        } else {
+            return false
+        }        
     }
 }

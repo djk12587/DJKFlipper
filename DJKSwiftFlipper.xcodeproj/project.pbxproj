@@ -7,18 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D5004AC019E30361000FE622 /* ScreenShotExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5004ABF19E30361000FE622 /* ScreenShotExtension.swift */; };
 		D5004AC319E30DBC000FE622 /* PageTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5004AC119E30DBC000FE622 /* PageTestViewController.swift */; };
 		D5004AC419E30DBC000FE622 /* PageTestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5004AC219E30DBC000FE622 /* PageTestViewController.xib */; };
 		D5A6CF6619DDE5F6000C359A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A6CF6519DDE5F6000C359A /* AppDelegate.swift */; };
-		D5A6CF6819DDE5F6000C359A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A6CF6719DDE5F6000C359A /* ViewController.swift */; };
+		D5A6CF6819DDE5F6000C359A /* FlipperViewContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A6CF6719DDE5F6000C359A /* FlipperViewContainerViewController.swift */; };
 		D5A6CF6B19DDE5F6000C359A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5A6CF6919DDE5F6000C359A /* Main.storyboard */; };
 		D5A6CF6D19DDE5F6000C359A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5A6CF6C19DDE5F6000C359A /* Images.xcassets */; };
 		D5A6CF7019DDE5F6000C359A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5A6CF6E19DDE5F6000C359A /* LaunchScreen.xib */; };
 		D5A6CF7C19DDE5F6000C359A /* PageFlipperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A6CF7B19DDE5F6000C359A /* PageFlipperTests.swift */; };
-		D5A6CF8819DDE6AC000C359A /* Flipper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A6CF8719DDE6AC000C359A /* Flipper.swift */; };
-		D5A6CF8A19DDF30C000C359A /* StaticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A6CF8919DDF30C000C359A /* StaticView.swift */; };
-		D5A6CF8C19DE0672000C359A /* AnimationLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A6CF8B19DE0672000C359A /* AnimationLayer.swift */; };
+		D5EFFA011ADEE5BD00AB53EC /* Flipper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EFF9FD1ADEE5BD00AB53EC /* Flipper.swift */; };
+		D5EFFA021ADEE5BD00AB53EC /* StaticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EFF9FE1ADEE5BD00AB53EC /* StaticView.swift */; };
+		D5EFFA031ADEE5BD00AB53EC /* AnimationLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EFF9FF1ADEE5BD00AB53EC /* AnimationLayer.swift */; };
+		D5EFFA041ADEE5BD00AB53EC /* ScreenShotExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EFFA001ADEE5BD00AB53EC /* ScreenShotExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,22 +32,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D5004ABF19E30361000FE622 /* ScreenShotExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenShotExtension.swift; sourceTree = "<group>"; };
 		D5004AC119E30DBC000FE622 /* PageTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageTestViewController.swift; sourceTree = "<group>"; };
 		D5004AC219E30DBC000FE622 /* PageTestViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PageTestViewController.xib; sourceTree = "<group>"; };
 		D5A6CF6019DDE5F6000C359A /* DJKSwiftFlipper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DJKSwiftFlipper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5A6CF6419DDE5F6000C359A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5A6CF6519DDE5F6000C359A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D5A6CF6719DDE5F6000C359A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D5A6CF6719DDE5F6000C359A /* FlipperViewContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipperViewContainerViewController.swift; sourceTree = "<group>"; };
 		D5A6CF6A19DDE5F6000C359A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D5A6CF6C19DDE5F6000C359A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D5A6CF6F19DDE5F6000C359A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		D5A6CF7519DDE5F6000C359A /* DJKSwiftFlipperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DJKSwiftFlipperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5A6CF7A19DDE5F6000C359A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5A6CF7B19DDE5F6000C359A /* PageFlipperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageFlipperTests.swift; sourceTree = "<group>"; };
-		D5A6CF8719DDE6AC000C359A /* Flipper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flipper.swift; sourceTree = "<group>"; };
-		D5A6CF8919DDF30C000C359A /* StaticView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticView.swift; sourceTree = "<group>"; };
-		D5A6CF8B19DE0672000C359A /* AnimationLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationLayer.swift; sourceTree = "<group>"; };
+		D5EFF9FD1ADEE5BD00AB53EC /* Flipper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flipper.swift; sourceTree = "<group>"; };
+		D5EFF9FE1ADEE5BD00AB53EC /* StaticView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticView.swift; sourceTree = "<group>"; };
+		D5EFF9FF1ADEE5BD00AB53EC /* AnimationLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationLayer.swift; sourceTree = "<group>"; };
+		D5EFFA001ADEE5BD00AB53EC /* ScreenShotExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenShotExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,10 +71,11 @@
 		D5004AC519E34292000FE622 /* Flipper */ = {
 			isa = PBXGroup;
 			children = (
-				D5A6CF8719DDE6AC000C359A /* Flipper.swift */,
-				D5A6CF8919DDF30C000C359A /* StaticView.swift */,
-				D5A6CF8B19DE0672000C359A /* AnimationLayer.swift */,
-				D5004ABF19E30361000FE622 /* ScreenShotExtension.swift */,
+				D5A6CF6719DDE5F6000C359A /* FlipperViewContainerViewController.swift */,
+				D5EFF9FD1ADEE5BD00AB53EC /* Flipper.swift */,
+				D5EFF9FE1ADEE5BD00AB53EC /* StaticView.swift */,
+				D5EFF9FF1ADEE5BD00AB53EC /* AnimationLayer.swift */,
+				D5EFFA001ADEE5BD00AB53EC /* ScreenShotExtension.swift */,
 			);
 			name = Flipper;
 			sourceTree = "<group>";
@@ -102,7 +103,6 @@
 			children = (
 				D5004AC519E34292000FE622 /* Flipper */,
 				D5A6CF6519DDE5F6000C359A /* AppDelegate.swift */,
-				D5A6CF6719DDE5F6000C359A /* ViewController.swift */,
 				D5A6CF6919DDE5F6000C359A /* Main.storyboard */,
 				D5A6CF6C19DDE5F6000C359A /* Images.xcassets */,
 				D5A6CF6E19DDE5F6000C359A /* LaunchScreen.xib */,
@@ -240,12 +240,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5A6CF6819DDE5F6000C359A /* ViewController.swift in Sources */,
-				D5A6CF8819DDE6AC000C359A /* Flipper.swift in Sources */,
+				D5A6CF6819DDE5F6000C359A /* FlipperViewContainerViewController.swift in Sources */,
 				D5004AC319E30DBC000FE622 /* PageTestViewController.swift in Sources */,
-				D5A6CF8A19DDF30C000C359A /* StaticView.swift in Sources */,
-				D5004AC019E30361000FE622 /* ScreenShotExtension.swift in Sources */,
-				D5A6CF8C19DE0672000C359A /* AnimationLayer.swift in Sources */,
+				D5EFFA031ADEE5BD00AB53EC /* AnimationLayer.swift in Sources */,
+				D5EFFA021ADEE5BD00AB53EC /* StaticView.swift in Sources */,
+				D5EFFA011ADEE5BD00AB53EC /* Flipper.swift in Sources */,
+				D5EFFA041ADEE5BD00AB53EC /* ScreenShotExtension.swift in Sources */,
 				D5A6CF6619DDE5F6000C359A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -31,7 +31,7 @@ class StaticView: CATransformLayer {
         frame.origin.x = 0
         lSide.frame = frame
         lSide.contentsScale = UIScreen.mainScreen().scale
-        lSide.backgroundColor = UIColor.purpleColor().CGColor
+        lSide.backgroundColor = UIColor.blackColor().CGColor
         
 //        var gradient = CAGradientLayer(layer: lSide)
 //        gradient.frame = lSide.bounds
@@ -51,7 +51,7 @@ class StaticView: CATransformLayer {
         frame.origin.x = frame.size.width
         rSide.frame = frame
         rSide.contentsScale = UIScreen.mainScreen().scale
-        rSide.backgroundColor = UIColor.cyanColor().CGColor
+        rSide.backgroundColor = UIColor.blackColor().CGColor
         return rSide
         }()
     

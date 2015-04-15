@@ -43,7 +43,7 @@ class AnimationLayer: CATransformLayer {
         fLayer.frame = self.bounds
         fLayer.doubleSided = false
         fLayer.transform = CATransform3DMakeRotation(CGFloat(M_PI), 0, 1.0, 0);
-        fLayer.backgroundColor = UIColor.cyanColor().CGColor
+        fLayer.backgroundColor = UIColor.blackColor().CGColor
         
         self.addSublayer(fLayer)
         return fLayer
