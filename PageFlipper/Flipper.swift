@@ -76,7 +76,7 @@ class Flipper: UIView {
         
         if let var gestures = self.gestureRecognizers {
             for gesture in gestures {
-                var tempGesture = gesture as! UIPanGestureRecognizer
+                var tempGesture = gesture as UIPanGestureRecognizer
                 tempGesture.enabled = true
             }
         }
@@ -85,7 +85,7 @@ class Flipper: UIView {
     func disablePanGesture() {
         if let var gestures = self.gestureRecognizers {
             for gesture in gestures {
-                var tempGesture = gesture as! UIPanGestureRecognizer
+                var tempGesture = gesture as UIPanGestureRecognizer
                 tempGesture.enabled = false
             }
         }
@@ -529,7 +529,7 @@ extension Flipper {
             
             var pendingAnimations = NSMutableArray(array: animationArray)
             for animation in animationArray {
-                var animationLayer = animation as! AnimationLayer
+                var animationLayer = animation as AnimationLayer
                 animationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusFail
                 animationLayer.removeFromSuperlayer()
             }
@@ -552,10 +552,10 @@ extension Flipper {
         } else if animationArray.count > 0 {
             //LOOP through this and check the new animation layer with current animations to make sure we dont allow the same animation to happen on a flip up
             for animLayer in animationArray {
-                var animationLayer = animLayer as! AnimationLayer
+                var animationLayer = animLayer as AnimationLayer
                 var layerIsPassedHalfway = false
                 
-                var rotationX = animationLayer.presentationLayer().valueForKeyPath("transform.rotation.x") as! CGFloat
+                var rotationX = animationLayer.presentationLayer().valueForKeyPath("transform.rotation.x") as CGFloat
                 
                 if animationLayer.flipDirection == FlipDirection.FlipDirectionRight && rotationX > 0 {
                     layerIsPassedHalfway = true
@@ -610,7 +610,7 @@ extension Flipper {
         let sortedArray = animationArray.sortedArrayUsingDescriptors(descriptors as [AnyObject])
         
         if sortedArray.count > 0 {
-            let animationLayer = sortedArray.first as! AnimationLayer
+            let animationLayer = sortedArray.first as AnimationLayer
             return animationLayer
         } else {
             return nil
@@ -622,7 +622,7 @@ extension Flipper {
         var array = NSMutableArray()
         
         for animLayer in animationArray {
-            var animationLayer = animLayer as! AnimationLayer
+            var animationLayer = animLayer as AnimationLayer
             if animationLayer.flipDirection == flipDirection {
                 array.addObject(animationLayer)
             }
