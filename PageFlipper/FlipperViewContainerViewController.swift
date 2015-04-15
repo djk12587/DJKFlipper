@@ -63,7 +63,7 @@ class FlipperViewContainerViewController: UIViewController, FlipperDataSource {
         
         //take an initial screenShot of all of the flippable view controllers
         for viewController in flipperViewArray {
-            let flipView = viewController as PageTestViewController
+            let flipView = viewController as! PageTestViewController
             flipperSnapshotArray?.append(flipView.view.takeSnapshot())
         }
         
@@ -91,7 +91,7 @@ class FlipperViewContainerViewController: UIViewController, FlipperDataSource {
     }
     
     func viewForPage(page: NSInteger, flipper: Flipper) -> UIView {
-        var viewController = flipperViewArray[page] as PageTestViewController
+        var viewController = flipperViewArray[page] as! PageTestViewController
         return viewController.view
     }
     
