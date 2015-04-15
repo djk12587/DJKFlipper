@@ -96,14 +96,14 @@ class AnimationLayer: CATransformLayer {
         }
     }
     
-    func setFrontLayer(image:UIImage) {
+    func frontLayer(image:UIImage) {
         var tmpImageRef = image.CGImage
         var rightImgRef = CGImageCreateWithImageInRect(tmpImageRef, CGRectMake(image.size.width/2 * UIScreen.mainScreen().scale, 0, image.size.width/2 * UIScreen.mainScreen().scale, image.size.height * UIScreen.mainScreen().scale))
 
         frontLayer.contents = rightImgRef
     }
     
-    func setBackLayer(image:UIImage) {
+    func backLayer(image:UIImage) {
         var tmpImageRef = image.CGImage
         var rightImgRef = CGImageCreateWithImageInRect(tmpImageRef, CGRectMake(0, 0, image.size.width/2 * UIScreen.mainScreen().scale, image.size.height * UIScreen.mainScreen().scale))
         
