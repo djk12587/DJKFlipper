@@ -16,13 +16,12 @@ enum FlipperStatus {
 
 @objc protocol FlipperDataSource {
     func numberOfPages(flipper:Flipper) -> NSInteger
-    func imageForPage(page:NSInteger, fipper:Flipper) -> UIImage?
     func viewForPage(page:NSInteger, flipper:Flipper) -> UIView
     
-    var flipperViewArray:[UIViewController] { get set }
-    var flipperSnapshotArray:[UIImage]? { get set }
-    var containerViewController:UIViewController? { get set }
-        
+//    var flipperViewArray:[UIViewController] { get set }
+//    var flipperSnapshotArray:[UIImage]? { get set }
+//    var containerViewController:UIViewController? { get set }
+    
 }
 
 class Flipper: UIView {
@@ -60,11 +59,13 @@ class Flipper: UIView {
                 numberOfPages = data.numberOfPages(self)
                 currentPage = 0
                 if numberOfPages > 0 {
-                    getAndAddNewBackground()
+                    updateNewBackground()
                 }
             }
         }
     }
+    
+    var flipperSnapshotArray:[UIImage]
     
     var flipperStatus = FlipperStatus.FlipperStatusInactive
     
@@ -91,22 +92,24 @@ class Flipper: UIView {
         }
     }
     
-    func setHomePage() {
-        numberOfPages = dataSource!.numberOfPages(self)
-        currentPage = 0
-        self.backgroundView.removeFromSuperview()
-        getAndAddNewBackground()
-    }
+//    func setHomePage() {
+//        numberOfPages = dataSource!.numberOfPages(self)
+//        currentPage = 0
+//        self.backgroundView.removeFromSuperview()
+//        getAndAddNewBackground()
+//    }
     
     //MARK: - Initializers
     
     override init(frame: CGRect) {
+        flipperSnapshotArray = []
         super.init(frame: frame)
         
         helperInit()
     }
     
     required init(coder aDecoder: NSCoder) {
+        flipperSnapshotArray = []
         super.init(coder: aDecoder)
         helperInit()
     }
@@ -121,7 +124,7 @@ class Flipper: UIView {
             numberOfPages = tempDatasource.numberOfPages(self)
             currentPage = 0
             
-            getAndAddNewBackground()
+            updateNewBackground()
         }
         
     }
@@ -245,17 +248,44 @@ class Flipper: UIView {
                     }
                     
                     //if there is no conflict we create the set the front and back layer sides for the animation layer
-                    //we also need to create the static layer that sites below the animation layer
+                    //we also need to create the static layer that sits below the animation layer
                     if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusBeginning {
                         
 //                        dataSource?.willUpdateBackgroundWithNewView(currentPage, flipper: self)
-                        dataSource?.flipperViewArray[currentPage].willMoveToParentViewController(nil)
+//                        dataSource?.flipperViewArray[currentPage].willMoveToParentViewController(nil)
                         
-                        var currentPageScreenShot = dataSource?.viewForPage(currentPage, flipper: self).takeSnapShotWithoutScreenUpdate()
+                        var previousPageScreenShot:UIImage?
+                        var currentPageScreenShot:UIImage?
+                        var nextPageScreenShot:UIImage?
+                        
+                        if var numberOfPages = dataSource?.numberOfPages(self) {
+                            if numberOfPages - 1 <= self.currentPage {
+                                currentPageScreenShot = dataSource?.viewForPage(currentPage, flipper: self).takeSnapShotWithoutScreenUpdate()
+                                if numberOfPages - 1 <= self.currentPage + 1 {
+                                    nextPageScreenShot = dataSource?.viewForPage(currentPage + 1, flipper: self).takeSnapShotWithoutScreenUpdate()
+                                }
+                                if self.currentPage - 1 >= 0 {
+                                    dataSource?.viewForPage(currentPage - 1, flipper: self).takeSnapShotWithoutScreenUpdate()
+                                }
+                            }
+                        }
+                        
+                        
+                        
+                        
+//                        var previousPageScreenShot = dataSource?.viewForPage(currentPage - 1, flipper: self).takeSnapShotWithoutScreenUpdate()
+//                        var currentPageScreenShot = dataSource?.viewForPage(currentPage, flipper: self).takeSnapShotWithoutScreenUpdate()
+//                        var nextPageScreenShot = dataSource?.viewForPage(currentPage + 1, flipper: self).takeSnapShotWithoutScreenUpdate()
                         
                         if var currentScreenShot = currentPageScreenShot {
-                            dataSource?.flipperSnapshotArray?.removeAtIndex(currentPage)
-                            dataSource?.flipperSnapshotArray?.insert(currentScreenShot, atIndex: currentPage)
+                            
+                            if self.flipperSnapshotArray.count - 1 >= currentPage {
+                                self.flipperSnapshotArray.removeAtIndex(currentPage)
+                                self.flipperSnapshotArray.insert(currentScreenShot, atIndex: currentPage)
+                            } else {
+                                self.flipperSnapshotArray.append(currentScreenShot)
+                            }
+                            
                         }
 
                         switch animationLayer.flipDirection {
@@ -266,16 +296,16 @@ class Flipper: UIView {
                                 //we are at the end
                                 animationLayer.flipProperties.endFlipAngle = -1.5
                                 animationLayer.isFirstOrLastPage = true
-                                animationLayer.setTheFrontLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                animationLayer.setTheFrontLayer(self.flipperSnapshotArray[currentPage])
                             } else {
                                 //next page flip
                                 if var currentScreenShot = currentPageScreenShot {
                                     animationLayer.setTheFrontLayer(currentScreenShot)
                                 } else {
-                                    animationLayer.setTheFrontLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                    animationLayer.setTheFrontLayer(self.flipperSnapshotArray[currentPage])
                                 }
                                 currentPage = currentPage + 1
-                                animationLayer.setTheBackLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                animationLayer.setTheBackLayer(self.flipperSnapshotArray[currentPage])
                             }
                         case FlipDirection.FlipDirectionRight:
                             if currentPage - 1 < 0 {
@@ -285,7 +315,7 @@ class Flipper: UIView {
                                 if var currentScreenShot = currentPageScreenShot {
                                     animationLayer.setTheBackLayer(currentScreenShot)
                                 } else {
-                                    animationLayer.setTheBackLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                    animationLayer.setTheBackLayer(self.flipperSnapshotArray[currentPage])
                                 }
 
                             } else {
@@ -294,10 +324,10 @@ class Flipper: UIView {
                                 if var currentScreenShot = currentPageScreenShot {
                                     animationLayer.setTheBackLayer(currentPageScreenShot!)
                                 } else {
-                                    animationLayer.setTheBackLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                    animationLayer.setTheBackLayer(self.flipperSnapshotArray[currentPage])
                                 }
                                 currentPage = currentPage - 1
-                                animationLayer.setTheFrontLayer(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                animationLayer.setTheFrontLayer(self.flipperSnapshotArray[currentPage])
                             }
                         }
                         
@@ -306,17 +336,17 @@ class Flipper: UIView {
                         if animationLayer.flipDirection == FlipDirection.FlipDirectionLeft {
                             
                             if animationLayer.isFirstOrLastPage == true && animationArray.count <= 1 {
-                                staticView.setTheLeftSide(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                staticView.setTheLeftSide(self.flipperSnapshotArray[currentPage])
                             } else {
                                 if flipperStatus == FlipperStatus.FlipperStatusBeginning {
                                     
                                     if var currentScreenShot = currentPageScreenShot {
                                         staticView.setTheLeftSide(currentScreenShot)
                                     } else {
-                                        staticView.setTheLeftSide(dataSource!.imageForPage(currentPage - 1, fipper: self)!)
+                                        staticView.setTheLeftSide(self.flipperSnapshotArray[currentPage - 1])
                                     }
                                 }
-                                staticView.setTheRightSide(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                staticView.setTheRightSide(self.flipperSnapshotArray[currentPage])
                             }
                             
                         } else {
@@ -325,7 +355,7 @@ class Flipper: UIView {
                                 if var currentScreenShot = currentPageScreenShot {
                                     staticView.setTheRightSide(currentScreenShot)
                                 } else {
-                                    staticView.setTheRightSide(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                    staticView.setTheRightSide(self.flipperSnapshotArray[currentPage])
                                 }
 
                             } else {
@@ -334,10 +364,10 @@ class Flipper: UIView {
                                     if var currentScreenShot = currentPageScreenShot {
                                         staticView.setTheRightSide(currentScreenShot)
                                     } else {
-                                        staticView.setTheRightSide(dataSource!.imageForPage(currentPage + 1, fipper: self)!)
+                                        staticView.setTheRightSide(self.flipperSnapshotArray[currentPage + 1])
                                     }
                                 }
-                                staticView.setTheLeftSide(dataSource!.imageForPage(currentPage, fipper: self)!)
+                                staticView.setTheLeftSide(self.flipperSnapshotArray[currentPage])
                             }
                         }
                         
@@ -500,7 +530,7 @@ class Flipper: UIView {
 
                         weakSelf?.flipperStatus = FlipperStatus.FlipperStatusInactive
 
-                        weakSelf?.getAndAddNewBackground()
+                        weakSelf?.updateNewBackground()
 
                         weakSelf?.staticView.removeFromSuperlayer()
                         CATransaction.flush()
@@ -525,7 +555,7 @@ extension Flipper {
     func willResignActive() {
         if flipperStatus != FlipperStatus.FlipperStatusInactive {
             //remove all animation layers and remove the static view
-            getAndAddNewBackground()
+            updateNewBackground()
             
             var pendingAnimations = NSMutableArray(array: animationArray)
             for animation in animationArray {
@@ -577,7 +607,7 @@ extension Flipper {
         return passedHalfWay
     }
     
-    func getAndAddNewBackground() {
+    func updateNewBackground() {
 
         self.backgroundView = self.dataSource!.viewForPage(self.currentPage, flipper: self)
         self.addSubview(self.backgroundView)
@@ -591,17 +621,17 @@ extension Flipper {
         self.addConstraints(constraintTop)
         self.addConstraints(constraintLeft)
         
-        if var theDataSource = dataSource {
-            if theDataSource.flipperViewArray[currentPage].childViewControllers.count > 0 {
-                (theDataSource.flipperViewArray[currentPage] as UIViewController).removeFromParentViewController()
-            }
-            
-            if var containerViewController = theDataSource.containerViewController {
-                containerViewController.addChildViewController(theDataSource.flipperViewArray[currentPage] as UIViewController)
-                (theDataSource.flipperViewArray[currentPage] as UIViewController).didMoveToParentViewController(containerViewController)
-            }
-            
-        }
+//        if var theDataSource = dataSource {
+//            if theDataSource.flipperViewArray[currentPage].childViewControllers.count > 0 {
+//                (theDataSource.flipperViewArray[currentPage] as UIViewController).removeFromParentViewController()
+//            }
+//            
+//            if var containerViewController = theDataSource.containerViewController {
+//                containerViewController.addChildViewController(theDataSource.flipperViewArray[currentPage] as UIViewController)
+//                (theDataSource.flipperViewArray[currentPage] as UIViewController).didMoveToParentViewController(containerViewController)
+//            }
+//            
+//        }
         
     }
     

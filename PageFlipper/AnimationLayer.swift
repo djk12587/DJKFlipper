@@ -63,6 +63,7 @@ class AnimationLayer: CATransformLayer {
 
     convenience init(frame:CGRect, isFirstOrLast:Bool) {
         self.init()
+        self.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusBeginning
         self.anchorPoint = CGPoint(x: 1.0, y: 0.5)
         self.frame = frame
         

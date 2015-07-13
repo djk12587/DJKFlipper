@@ -8,14 +8,14 @@
 
 import UIKit
 
-class FlipperViewContainerViewController: UIViewController, FlipperDataSource {
+class FlipperViewContainerViewController: UIViewController, FlipperDataSource2 {
     
-    @IBOutlet weak var flipView: Flipper!
+    @IBOutlet weak var flipView: FlipperReDo!
     
     //instantiate flipper protocol properties
     var flipperViewArray:[UIViewController] = []
-    lazy var flipperSnapshotArray:[UIImage]? = []
-    var containerViewController:UIViewController?
+//    lazy var flipperSnapshotArray:[UIImage]? = []
+//    var containerViewController:UIViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,39 +58,38 @@ class FlipperViewContainerViewController: UIViewController, FlipperDataSource {
         
         //add the view controllers to the flipperViewArray
         flipperViewArray += [page1,page2,page3,page4,page5,page6]
-//        flipperViewArray.addObjectsFromArray([page1,page2,page3,page4,page5,page6])
-        
         
         //take an initial screenShot of all of the flippable view controllers
-        for viewController in flipperViewArray {
-            let flipView = viewController as! PageTestViewController
-            flipperSnapshotArray?.append(flipView.view.takeSnapshot())
-        }
+//        for viewController in flipperViewArray {
+//            let flipView = viewController as! PageTestViewController
+//            flipperSnapshotArray?.append(flipView.view.takeSnapshot())
+//        }
         
         //set the delegate and containerViewController
         //The containerViewController will allow the flippable viewControllers to go through the viewcontroller life cycle, viewDidAppear, viewDidDisappear, etc
         flipView?.dataSource = self
-        containerViewController = self
+//        containerViewController = self
         
         //tell the flipView to update the home page
-        flipView.setHomePage()
+//        flipView.setHomePage()
     }
     
     //MARK: - FlipperDataSource Methods
     
-    func numberOfPages(flipper: Flipper) -> NSInteger {
+//    func imageForPage(page: NSInteger, fipper: Flipper) -> UIImage? {
+////        if var snapShot = flipperSnapshotArray?[page] {
+////            return snapShot
+////        } else {
+////            return nil
+////        }
+//        return nil
+//    }
+    
+    func numberOfPages(flipper: FlipperReDo) -> NSInteger {
         return flipperViewArray.count
     }
     
-    func imageForPage(page: NSInteger, fipper: Flipper) -> UIImage? {
-        if var snapShot = flipperSnapshotArray?[page] {
-            return snapShot
-        } else {
-            return nil
-        }
-    }
-    
-    func viewForPage(page: NSInteger, flipper: Flipper) -> UIView {
+    func viewForPage(page: NSInteger, flipper: FlipperReDo) -> UIView {
         var viewController = flipperViewArray[page] as! PageTestViewController
         return viewController.view
     }
@@ -99,12 +98,12 @@ class FlipperViewContainerViewController: UIViewController, FlipperDataSource {
         super.didReceiveMemoryWarning()
     }
     
-    override func shouldAutorotate() -> Bool {
-        if flipView.flipperStatus == FlipperStatus.FlipperStatusInactive {
-            return true
-        } else {
-            return false
-        }
-    }
+//    override func shouldAutorotate() -> Bool {
+//        if flipView.flipperStatus == FlipperStatus.FlipperStatusInactive {
+//            return true
+//        } else {
+//            return false
+//        }
+//    }
 }
 
