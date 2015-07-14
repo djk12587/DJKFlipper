@@ -251,9 +251,6 @@ class Flipper: UIView {
                     //we also need to create the static layer that sits below the animation layer
                     if animationLayer.flipAnimationStatus == FlipAnimationStatus.FlipAnimationStatusBeginning {
                         
-//                        dataSource?.willUpdateBackgroundWithNewView(currentPage, flipper: self)
-//                        dataSource?.flipperViewArray[currentPage].willMoveToParentViewController(nil)
-                        
                         var previousPageScreenShot:UIImage?
                         var currentPageScreenShot:UIImage?
                         var nextPageScreenShot:UIImage?
@@ -270,12 +267,6 @@ class Flipper: UIView {
                             }
                         }
                         
-                        
-                        
-                        
-//                        var previousPageScreenShot = dataSource?.viewForPage(currentPage - 1, flipper: self).takeSnapShotWithoutScreenUpdate()
-//                        var currentPageScreenShot = dataSource?.viewForPage(currentPage, flipper: self).takeSnapShotWithoutScreenUpdate()
-//                        var nextPageScreenShot = dataSource?.viewForPage(currentPage + 1, flipper: self).takeSnapShotWithoutScreenUpdate()
                         
                         if var currentScreenShot = currentPageScreenShot {
                             
@@ -349,7 +340,8 @@ class Flipper: UIView {
                                 staticView.setTheRightSide(self.flipperSnapshotArray[currentPage])
                             }
                             
-                        } else {
+                        }
+                        else {
                             if animationLayer.isFirstOrLastPage == true && animationArray.count <= 1 {
                                 
                                 if var currentScreenShot = currentPageScreenShot {
