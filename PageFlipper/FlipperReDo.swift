@@ -103,6 +103,7 @@ class FlipperReDo: UIView {
             panChangedWithGesture(gesture, translation: translation, progress: progress)
         case .Ended:
             println("Ended")
+            panEndedWithGesture(gesture, translation: translation)
         case .Cancelled:
             gesture.enabled = true
         case .Failed:
@@ -112,12 +113,46 @@ class FlipperReDo: UIView {
         }
     }
     
+    func panEndedWithGesture(gesture:UIPanGestureRecognizer, translation:CGFloat) {
+        if var currentAnimationLayer = animatingLayers.last {
+            currentAnimationLayer.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusCompleting
+            
+            var releaseSpeed:CGFloat = (translation + gesture.velocityInView(self).x/4) / self.bounds.size.width
+            var speedThreshold:CGFloat = 0.5
+            
+            var flipToNewPage = false
+            if currentAnimationLayer.flipDirection == FlipDirection.FlipDirectionLeft && fabs(releaseSpeed) > speedThreshold && !currentAnimationLayer.isFirstOrLastPage && releaseSpeed < 0 {
+                flipToNewPage = true
+            } else if currentAnimationLayer.flipDirection == FlipDirection.FlipDirectionRight && fabs(releaseSpeed) > speedThreshold && !currentAnimationLayer.isFirstOrLastPage && releaseSpeed > 0{
+                flipToNewPage = true
+            }
+            
+            if flipToNewPage == true {
+                flipPage(currentAnimationLayer, progress: 1.0, animated: true, clearFlip: true)
+            } else {
+                if !currentAnimationLayer.isFirstOrLastPage {
+                    if currentAnimationLayer.flipDirection == FlipDirection.FlipDirectionLeft {
+                        currentAnimationLayer.flipDirection = FlipDirection.FlipDirectionRight
+                        currentPage = currentPage - 1
+                    } else {
+                        currentAnimationLayer.flipDirection = FlipDirection.FlipDirectionLeft
+                        currentPage = currentPage + 1
+                    }
+                }
+                
+                flipPage(currentAnimationLayer, progress: 0.0, animated: true, clearFlip: true)
+            }
+        }
+    }
+    
     func panBegan(gesture:UIPanGestureRecognizer) {
         if checkIfAnimationsArePassedHalfway() != true {
             gesture.enabled = false
-        } else if flipperState == .Inactive {
+        } else {
             
-            flipperState = .Began
+            if flipperState == .Inactive {
+                flipperState = .Began
+            }
             
             var screenBounds = UIScreen.mainScreen().bounds
             var animationLayer = AnimationLayer(frame: self.staticView.rightSide.bounds, isFirstOrLast:false)
@@ -129,69 +164,60 @@ class FlipperReDo: UIView {
             }
             
             animatingLayers.append(animationLayer)
-        } else {
-            //TODO: - check to see if this ever occurs during use
-            println("something is wrong")
+            println("asd")
         }
     }
     
     func panChangedWithGesture(gesture:UIPanGestureRecognizer, translation:CGFloat, var progress:CGFloat) {
 
         if var currentAnimationLayer = animatingLayers.last {
-            
-            switch (currentAnimationLayer.flipAnimationStatus) {
-            case .FlipAnimationStatusBeginning:
-                println("layer beginning")
+            if currentAnimationLayer.flipAnimationStatus == .FlipAnimationStatusBeginning {
                 animationStatusBeginning(currentAnimationLayer, translation: translation, progress: progress, gesture: gesture)
-            case .FlipAnimationStatusActive:
+            } else if currentAnimationLayer.flipAnimationStatus == .FlipAnimationStatusActive {
                 animationStatusActive(currentAnimationLayer, translation: translation, progress: progress)
-                println("layer active")
-            case .FlipAnimationStatusCompleting:
-                println("layer completing")
-            case .FlipAnimationStatusComplete:
-                println("layer complete")
-            case .FlipAnimationStatusInterrupt:
-                println("layer interrupt")
-            case .FlipAnimationStatusFail:
-                println("layer fail")
-            case .FlipAnimationStatusNone:
-                println("layer none")
             }
         }
     }
     
     func animationStatusBeginning(currentAnimationLayer:AnimationLayer, translation:CGFloat, progress:CGFloat, gesture:UIPanGestureRecognizer) {
-        if currentAnimationLayer.flipAnimationStatus == .FlipAnimationStatusBeginning && flipperState == .Began {
+        if currentAnimationLayer.flipAnimationStatus == .FlipAnimationStatusBeginning {
             
             flipperState = .Active
             
             //set currentAnimationLayers direction
             currentAnimationLayer.updateFlipDirection(getFlipDirection(translation))
             
-            //gesture speed is slow
-            if isIncrementalSwipe(gesture, animationLayer: currentAnimationLayer) {
-                currentAnimationLayer.flipAnimationStatus = .FlipAnimationStatusActive
+            if handleConflictingAnimationsWithAnimationLayer(currentAnimationLayer) == false {
+                //gesture speed is slow
+                if isIncrementalSwipe(gesture, animationLayer: currentAnimationLayer) {
+                    currentAnimationLayer.flipAnimationStatus = .FlipAnimationStatusActive
+                } else {
+                    currentAnimationLayer.flipAnimationStatus = .FlipAnimationStatusCompleting
+                }
+                
+                updateViewControllerSnapShotsWithCurrentPage(self.currentPage)
+                setUpAnimationLayerFrontAndBack(currentAnimationLayer)
+                setUpStaticLayerForTheAnimationLayer(currentAnimationLayer)
+                
+                self.layer.addSublayer(currentAnimationLayer)
+                //you need to perform a flush otherwise the animation duration is not honored.
+                //more information can be found here http://stackoverflow.com/questions/8661355/implicit-animation-fade-in-is-not-working#comment10764056_8661741
+                CATransaction.flush()
+                
+                //add the animation layer to the view
+                addAnimationLayer()
+                
+                if currentAnimationLayer.flipAnimationStatus == .FlipAnimationStatusActive {
+                    animationStatusActive(currentAnimationLayer, translation: translation, progress: progress)
+                }
             } else {
-                currentAnimationLayer.flipAnimationStatus = .FlipAnimationStatusCompleting
+                gesture.enabled = false
             }
             
-            updateViewControllerSnapShotsWithCurrentPage(self.currentPage)
-            setUpAnimationLayerFrontAndBack(currentAnimationLayer)
-            setUpStaticLayerForTheAnimationLayer(currentAnimationLayer)
             
-            self.layer.addSublayer(currentAnimationLayer)
-            //you need to perform a flush otherwise the animation duration is not honored.
-            //more information can be found here http://stackoverflow.com/questions/8661355/implicit-animation-fade-in-is-not-working#comment10764056_8661741
-            CATransaction.flush()
-            
-            //add the animation layer to the view
-            addAnimationLayer()
-            
-            if currentAnimationLayer.flipAnimationStatus == .FlipAnimationStatusActive {
-                animationStatusActive(currentAnimationLayer, translation: translation, progress: progress)
-            } else if currentAnimationLayer.flipAnimationStatus == .FlipAnimationStatusCompleting {
-                animationStatusCompleting(currentAnimationLayer)
-            }
+//            else if currentAnimationLayer.flipAnimationStatus == .FlipAnimationStatusCompleting {
+//                animationStatusCompleting(currentAnimationLayer)
+//            }
         }
     }
     
@@ -248,7 +274,7 @@ class FlipperReDo: UIView {
             }
         } else {
             if animationLayer.isFirstOrLastPage == true && animatingLayers.count <= 1 {
-                staticView.setTheRightSide(self.viewControllerSnapShots[currentPage + 1]!)
+                staticView.setTheRightSide(self.viewControllerSnapShots[currentPage]!)
             } else {
                 staticView.setTheRightSide(self.viewControllerSnapShots[currentPage + 1]!)
                 staticView.setTheLeftSide(self.viewControllerSnapShots[currentPage]!)
@@ -295,7 +321,7 @@ class FlipperReDo: UIView {
         if var numberOfPages = dataSource?.numberOfPages(self) {
             if  currentPage <= numberOfPages - 1 {
                 //set the current page snapshot
-                viewControllerSnapShots[currentPage] = dataSource?.viewForPage(currentPage, flipper: self).takeSnapShotWithoutScreenUpdate()
+                viewControllerSnapShots[currentPage] = dataSource?.viewForPage(currentPage, flipper: self).takeSnapshot()
                 
                 if currentPage + 1 <= numberOfPages - 1  {
                     //set the right page snapshot
@@ -314,7 +340,7 @@ class FlipperReDo: UIView {
         }
     }
     
-    func handleConflictingAnimationsWithAnAnimationLayer(animationLayer:AnimationLayer) -> Bool {
+    func handleConflictingAnimationsWithAnimationLayer(animationLayer:AnimationLayer) -> Bool {
         
         //check if there is an animation layer before that is still animating at the opposite swipe direction
         var animationConflict = false
@@ -392,8 +418,6 @@ class FlipperReDo: UIView {
         var newAngle:CGFloat = page.flipProperties.startAngle + progress * (page.flipProperties.endFlipAngle - page.flipProperties.startAngle)
         var duration:CGFloat
         var durationConstant:CGFloat = 0.75
-        
-        println(newAngle)
         
         if page.isFirstOrLastPage == true {
             durationConstant = 0.5
