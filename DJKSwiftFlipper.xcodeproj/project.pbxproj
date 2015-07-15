@@ -21,6 +21,7 @@
 		D5EFFA041ADEE5BD00AB53EC /* ScreenShotExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EFFA001ADEE5BD00AB53EC /* ScreenShotExtension.swift */; };
 		D621CF241B54166300DC66AE /* FlipperReDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621CF231B54166300DC66AE /* FlipperReDo.swift */; };
 		D621CF281B547DC500DC66AE /* ArrayHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621CF271B547DC500DC66AE /* ArrayHelper.swift */; };
+		D69726C31B56DD3F000A037A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69726C21B56DD3F000A037A /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 		D5EFFA001ADEE5BD00AB53EC /* ScreenShotExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenShotExtension.swift; sourceTree = "<group>"; };
 		D621CF231B54166300DC66AE /* FlipperReDo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlipperReDo.swift; sourceTree = "<group>"; };
 		D621CF271B547DC500DC66AE /* ArrayHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayHelper.swift; sourceTree = "<group>"; };
+		D69726C21B56DD3F000A037A /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				D5EFFA001ADEE5BD00AB53EC /* ScreenShotExtension.swift */,
 				D621CF231B54166300DC66AE /* FlipperReDo.swift */,
 				D621CF271B547DC500DC66AE /* ArrayHelper.swift */,
+				D69726C21B56DD3F000A037A /* Constants.swift */,
 			);
 			name = Flipper;
 			sourceTree = "<group>";
@@ -251,6 +254,7 @@
 				D5004AC319E30DBC000FE622 /* PageTestViewController.swift in Sources */,
 				D5EFFA031ADEE5BD00AB53EC /* AnimationLayer.swift in Sources */,
 				D5EFFA021ADEE5BD00AB53EC /* StaticView.swift in Sources */,
+				D69726C31B56DD3F000A037A /* Constants.swift in Sources */,
 				D5EFFA011ADEE5BD00AB53EC /* Flipper.swift in Sources */,
 				D5EFFA041ADEE5BD00AB53EC /* ScreenShotExtension.swift in Sources */,
 				D5A6CF6619DDE5F6000C359A /* AppDelegate.swift in Sources */,
