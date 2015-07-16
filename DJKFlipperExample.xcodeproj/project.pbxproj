@@ -15,6 +15,7 @@
 		D5A6CF6D19DDE5F6000C359A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5A6CF6C19DDE5F6000C359A /* Images.xcassets */; };
 		D5A6CF7019DDE5F6000C359A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5A6CF6E19DDE5F6000C359A /* LaunchScreen.xib */; };
 		D5A6CF7C19DDE5F6000C359A /* PageFlipperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A6CF7B19DDE5F6000C359A /* PageFlipperTests.swift */; };
+		D6039C081B575BEE0055A6EB /* DJKFlipper.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D6039C021B57591C0055A6EB /* DJKFlipper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +40,13 @@
 			remoteGlobalIDString = D6A577301B57505200FD275A;
 			remoteInfo = DJKFlipperTests;
 		};
+		D6039C061B575BE30055A6EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D6A577691B5751AB00FD275A /* DJKFlipper.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D6A577241B57505200FD275A;
+			remoteInfo = DJKFlipper;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -48,6 +56,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				D6039C081B575BEE0055A6EB /* DJKFlipper.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,6 +180,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D6039C071B575BE30055A6EB /* PBXTargetDependency */,
 			);
 			name = DJKFlipperExample;
 			productName = PageFlipper;
@@ -302,6 +312,11 @@
 			isa = PBXTargetDependency;
 			target = D5A6CF5F19DDE5F6000C359A /* DJKFlipperExample */;
 			targetProxy = D5A6CF7619DDE5F6000C359A /* PBXContainerItemProxy */;
+		};
+		D6039C071B575BE30055A6EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = DJKFlipper;
+			targetProxy = D6039C061B575BE30055A6EB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
