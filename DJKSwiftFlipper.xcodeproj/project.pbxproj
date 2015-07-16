@@ -15,13 +15,12 @@
 		D5A6CF6D19DDE5F6000C359A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5A6CF6C19DDE5F6000C359A /* Images.xcassets */; };
 		D5A6CF7019DDE5F6000C359A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5A6CF6E19DDE5F6000C359A /* LaunchScreen.xib */; };
 		D5A6CF7C19DDE5F6000C359A /* PageFlipperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A6CF7B19DDE5F6000C359A /* PageFlipperTests.swift */; };
-		D5EFFA011ADEE5BD00AB53EC /* Flipper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EFF9FD1ADEE5BD00AB53EC /* Flipper.swift */; };
-		D5EFFA021ADEE5BD00AB53EC /* StaticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EFF9FE1ADEE5BD00AB53EC /* StaticView.swift */; };
-		D5EFFA031ADEE5BD00AB53EC /* AnimationLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EFF9FF1ADEE5BD00AB53EC /* AnimationLayer.swift */; };
-		D5EFFA041ADEE5BD00AB53EC /* ScreenShotExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EFFA001ADEE5BD00AB53EC /* ScreenShotExtension.swift */; };
-		D621CF241B54166300DC66AE /* FlipperReDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621CF231B54166300DC66AE /* FlipperReDo.swift */; };
-		D621CF281B547DC500DC66AE /* ArrayHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621CF271B547DC500DC66AE /* ArrayHelper.swift */; };
-		D69726C31B56DD3F000A037A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69726C21B56DD3F000A037A /* Constants.swift */; };
+		D5EFFA021ADEE5BD00AB53EC /* DJKStaticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EFF9FE1ADEE5BD00AB53EC /* DJKStaticView.swift */; };
+		D5EFFA031ADEE5BD00AB53EC /* DJKAnimationLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EFF9FF1ADEE5BD00AB53EC /* DJKAnimationLayer.swift */; };
+		D5EFFA041ADEE5BD00AB53EC /* DJKScreenShotExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EFFA001ADEE5BD00AB53EC /* DJKScreenShotExtension.swift */; };
+		D621CF241B54166300DC66AE /* DJKFlipper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621CF231B54166300DC66AE /* DJKFlipper.swift */; };
+		D621CF281B547DC500DC66AE /* DJKArrayHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621CF271B547DC500DC66AE /* DJKArrayHelper.swift */; };
+		D69726C31B56DD3F000A037A /* DJKFlipperConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69726C21B56DD3F000A037A /* DJKFlipperConstants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,13 +46,12 @@
 		D5A6CF7519DDE5F6000C359A /* DJKSwiftFlipperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DJKSwiftFlipperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5A6CF7A19DDE5F6000C359A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5A6CF7B19DDE5F6000C359A /* PageFlipperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageFlipperTests.swift; sourceTree = "<group>"; };
-		D5EFF9FD1ADEE5BD00AB53EC /* Flipper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flipper.swift; sourceTree = "<group>"; };
-		D5EFF9FE1ADEE5BD00AB53EC /* StaticView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticView.swift; sourceTree = "<group>"; };
-		D5EFF9FF1ADEE5BD00AB53EC /* AnimationLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationLayer.swift; sourceTree = "<group>"; };
-		D5EFFA001ADEE5BD00AB53EC /* ScreenShotExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenShotExtension.swift; sourceTree = "<group>"; };
-		D621CF231B54166300DC66AE /* FlipperReDo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlipperReDo.swift; sourceTree = "<group>"; };
-		D621CF271B547DC500DC66AE /* ArrayHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayHelper.swift; sourceTree = "<group>"; };
-		D69726C21B56DD3F000A037A /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		D5EFF9FE1ADEE5BD00AB53EC /* DJKStaticView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKStaticView.swift; sourceTree = "<group>"; };
+		D5EFF9FF1ADEE5BD00AB53EC /* DJKAnimationLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKAnimationLayer.swift; sourceTree = "<group>"; };
+		D5EFFA001ADEE5BD00AB53EC /* DJKScreenShotExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKScreenShotExtension.swift; sourceTree = "<group>"; };
+		D621CF231B54166300DC66AE /* DJKFlipper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKFlipper.swift; sourceTree = "<group>"; };
+		D621CF271B547DC500DC66AE /* DJKArrayHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKArrayHelper.swift; sourceTree = "<group>"; };
+		D69726C21B56DD3F000A037A /* DJKFlipperConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKFlipperConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,19 +72,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D5004AC519E34292000FE622 /* Flipper */ = {
+		D5004AC519E34292000FE622 /* DJKFlipper */ = {
 			isa = PBXGroup;
 			children = (
-				D5A6CF6719DDE5F6000C359A /* FlipperViewContainerViewController.swift */,
-				D5EFF9FD1ADEE5BD00AB53EC /* Flipper.swift */,
-				D5EFF9FE1ADEE5BD00AB53EC /* StaticView.swift */,
-				D5EFF9FF1ADEE5BD00AB53EC /* AnimationLayer.swift */,
-				D5EFFA001ADEE5BD00AB53EC /* ScreenShotExtension.swift */,
-				D621CF231B54166300DC66AE /* FlipperReDo.swift */,
-				D621CF271B547DC500DC66AE /* ArrayHelper.swift */,
-				D69726C21B56DD3F000A037A /* Constants.swift */,
+				D621CF231B54166300DC66AE /* DJKFlipper.swift */,
+				D5EFF9FF1ADEE5BD00AB53EC /* DJKAnimationLayer.swift */,
+				D5EFF9FE1ADEE5BD00AB53EC /* DJKStaticView.swift */,
+				D5EFFA001ADEE5BD00AB53EC /* DJKScreenShotExtension.swift */,
+				D621CF271B547DC500DC66AE /* DJKArrayHelper.swift */,
+				D69726C21B56DD3F000A037A /* DJKFlipperConstants.swift */,
 			);
-			name = Flipper;
+			name = DJKFlipper;
 			sourceTree = "<group>";
 		};
 		D5A6CF5719DDE5F6000C359A = {
@@ -110,7 +106,8 @@
 		D5A6CF6219DDE5F6000C359A /* DJKSwiftFlipper */ = {
 			isa = PBXGroup;
 			children = (
-				D5004AC519E34292000FE622 /* Flipper */,
+				D5004AC519E34292000FE622 /* DJKFlipper */,
+				D5A6CF6719DDE5F6000C359A /* FlipperViewContainerViewController.swift */,
 				D5A6CF6519DDE5F6000C359A /* AppDelegate.swift */,
 				D5A6CF6919DDE5F6000C359A /* Main.storyboard */,
 				D5A6CF6C19DDE5F6000C359A /* Images.xcassets */,
@@ -249,16 +246,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D621CF241B54166300DC66AE /* FlipperReDo.swift in Sources */,
+				D621CF241B54166300DC66AE /* DJKFlipper.swift in Sources */,
 				D5A6CF6819DDE5F6000C359A /* FlipperViewContainerViewController.swift in Sources */,
 				D5004AC319E30DBC000FE622 /* PageTestViewController.swift in Sources */,
-				D5EFFA031ADEE5BD00AB53EC /* AnimationLayer.swift in Sources */,
-				D5EFFA021ADEE5BD00AB53EC /* StaticView.swift in Sources */,
-				D69726C31B56DD3F000A037A /* Constants.swift in Sources */,
-				D5EFFA011ADEE5BD00AB53EC /* Flipper.swift in Sources */,
-				D5EFFA041ADEE5BD00AB53EC /* ScreenShotExtension.swift in Sources */,
+				D5EFFA031ADEE5BD00AB53EC /* DJKAnimationLayer.swift in Sources */,
+				D5EFFA021ADEE5BD00AB53EC /* DJKStaticView.swift in Sources */,
+				D69726C31B56DD3F000A037A /* DJKFlipperConstants.swift in Sources */,
+				D5EFFA041ADEE5BD00AB53EC /* DJKScreenShotExtension.swift in Sources */,
 				D5A6CF6619DDE5F6000C359A /* AppDelegate.swift in Sources */,
-				D621CF281B547DC500DC66AE /* ArrayHelper.swift in Sources */,
+				D621CF281B547DC500DC66AE /* DJKArrayHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

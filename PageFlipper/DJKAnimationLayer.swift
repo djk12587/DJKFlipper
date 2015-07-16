@@ -16,25 +16,25 @@ struct AnimationProperties {
 }
 
 enum FlipDirection {
-    case FlipDirectionLeft
-    case FlipDirectionRight
-    case FlipDirectionNotSet
+    case Left
+    case Right
+    case NotSet
 }
 
 enum FlipAnimationStatus {
-    case FlipAnimationStatusNone
-    case FlipAnimationStatusBeginning
-    case FlipAnimationStatusActive
-    case FlipAnimationStatusCompleting
-    case FlipAnimationStatusComplete
-    case FlipAnimationStatusInterrupt
-    case FlipAnimationStatusFail
+    case None
+    case Beginning
+    case Active
+    case Completing
+    case Complete
+    case Interrupt
+    case Fail
 }
 
-class AnimationLayer: CATransformLayer {
+class DJKAnimationLayer: CATransformLayer {
     
-    var flipDirection:FlipDirection = FlipDirection.FlipDirectionNotSet
-    var flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusNone
+    var flipDirection:FlipDirection = .NotSet
+    var flipAnimationStatus = FlipAnimationStatus.None
     var flipProperties = AnimationProperties(currentAngle: 0, startAngle: 0, endFlipAngle: CGFloat(-M_PI))
     var isFirstOrLastPage:Bool = false
     
@@ -63,7 +63,7 @@ class AnimationLayer: CATransformLayer {
 
     convenience init(frame:CGRect, isFirstOrLast:Bool) {
         self.init()
-        self.flipAnimationStatus = FlipAnimationStatus.FlipAnimationStatusBeginning
+        self.flipAnimationStatus = FlipAnimationStatus.Beginning
         self.anchorPoint = CGPoint(x: 1.0, y: 0.5)
         self.frame = frame
         
@@ -84,7 +84,7 @@ class AnimationLayer: CATransformLayer {
     
     func updateFlipDirection(direction:FlipDirection) {
         flipDirection = direction
-        if flipDirection == FlipDirection.FlipDirectionLeft {
+        if flipDirection == .Left {
             flipProperties.currentAngle = CGFloat(-M_PI)
             flipProperties.startAngle = CGFloat(-M_PI)
             flipProperties.endFlipAngle = 0

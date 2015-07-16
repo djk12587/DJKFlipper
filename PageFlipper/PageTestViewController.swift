@@ -25,7 +25,6 @@ class PageTestViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
         println("view did appear")
     }
     

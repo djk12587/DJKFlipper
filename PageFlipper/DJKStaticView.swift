@@ -8,7 +8,7 @@
 
 import UIKit
 
-class StaticView: CATransformLayer {
+class DJKStaticView: CATransformLayer {
     
     convenience init(frame: CGRect) {
         self.init()
@@ -32,14 +32,6 @@ class StaticView: CATransformLayer {
         lSide.frame = frame
         lSide.contentsScale = UIScreen.mainScreen().scale
         lSide.backgroundColor = UIColor.blackColor().CGColor
-        
-//        var gradient = CAGradientLayer(layer: lSide)
-//        gradient.frame = lSide.bounds
-//        let colorArray = NSArray(objects: UIColor.blackColor().CGColor,UIColor.clearColor().CGColor)
-//        gradient.colors = colorArray
-//        gradient.endPoint = CGPointMake(1, 0.5)
-//        gradient.startPoint = CGPointMake(0, 0.5)
-//        lSide.mask = gradient
         
         return lSide
     }()
@@ -70,16 +62,6 @@ class StaticView: CATransformLayer {
     func updateFrame(newFrame:CGRect) {
         self.frame = newFrame
         updatePageLayerFrames(newFrame)
-        
-//        var gradient = CAGradientLayer(layer: leftSide)
-//        gradient.frame = leftSide.bounds
-//        let colorArray = NSArray(objects: UIColor.blackColor().CGColor,UIColor.clearColor().CGColor)
-//        gradient.colors = colorArray
-//        gradient.startPoint = CGPointMake(1, 0.5)
-//        gradient.endPoint = CGPointMake(0, 0.5)
-//        
-//        leftSide.mask = gradient
-        
     }
     
     private func updatePageLayerFrames(newFrame:CGRect) {
