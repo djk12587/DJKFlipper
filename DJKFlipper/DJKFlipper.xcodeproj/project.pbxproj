@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D6039C091B57609E0055A6EB /* DJKFlipper.swift in Headers */ = {isa = PBXBuildFile; fileRef = D6A5774A1B5750CF00FD275A /* DJKFlipper.swift */; };
+		D6039C0A1B5760C80055A6EB /* DJKAnimationLayer.swift in Headers */ = {isa = PBXBuildFile; fileRef = D6A5774B1B5750CF00FD275A /* DJKAnimationLayer.swift */; };
+		D6039C0B1B5760C80055A6EB /* DJKStaticView.swift in Headers */ = {isa = PBXBuildFile; fileRef = D6A5774C1B5750CF00FD275A /* DJKStaticView.swift */; };
+		D6039C0C1B5760C80055A6EB /* DJKScreenShotExtension.swift in Headers */ = {isa = PBXBuildFile; fileRef = D6A5774D1B5750CF00FD275A /* DJKScreenShotExtension.swift */; };
+		D6039C0D1B5760C80055A6EB /* DJKArrayHelper.swift in Headers */ = {isa = PBXBuildFile; fileRef = D6A5774E1B5750CF00FD275A /* DJKArrayHelper.swift */; };
+		D6039C0E1B5760C80055A6EB /* DJKFlipperConstants.swift in Headers */ = {isa = PBXBuildFile; fileRef = D6A5774F1B5750CF00FD275A /* DJKFlipperConstants.swift */; };
 		D6A5772B1B57505200FD275A /* DJKFlipper.h in Headers */ = {isa = PBXBuildFile; fileRef = D6A5772A1B57505200FD275A /* DJKFlipper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D6A577311B57505200FD275A /* DJKFlipper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A577251B57505200FD275A /* DJKFlipper.framework */; };
 		D6A577381B57505200FD275A /* DJKFlipperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A577371B57505200FD275A /* DJKFlipperTests.swift */; };
@@ -128,6 +134,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6A5772B1B57505200FD275A /* DJKFlipper.h in Headers */,
+				D6039C0A1B5760C80055A6EB /* DJKAnimationLayer.swift in Headers */,
+				D6039C0B1B5760C80055A6EB /* DJKStaticView.swift in Headers */,
+				D6039C0C1B5760C80055A6EB /* DJKScreenShotExtension.swift in Headers */,
+				D6039C0D1B5760C80055A6EB /* DJKArrayHelper.swift in Headers */,
+				D6039C0E1B5760C80055A6EB /* DJKFlipperConstants.swift in Headers */,
+				D6039C091B57609E0055A6EB /* DJKFlipper.swift in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
