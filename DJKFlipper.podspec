@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "DJKFlipper"
-  s.version          = "0.1.1"
+  s.version          = "0.1.2"
   s.summary          = "Flipboard like animation built with swift."
   s.description      = <<-DESC
                       An attempt to copy flipboard like flip animations in swift.

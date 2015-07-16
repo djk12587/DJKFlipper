@@ -25,6 +25,20 @@
 			remoteGlobalIDString = D5A6CF5F19DDE5F6000C359A;
 			remoteInfo = PageFlipper;
 		};
+		D6039C011B57591C0055A6EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D6A577691B5751AB00FD275A /* DJKFlipper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D6A577251B57505200FD275A;
+			remoteInfo = DJKFlipper;
+		};
+		D6039C031B57591C0055A6EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D6A577691B5751AB00FD275A /* DJKFlipper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D6A577301B57505200FD275A;
+			remoteInfo = DJKFlipperTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -133,6 +147,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		D6039BFD1B57591C0055A6EB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D6039C021B57591C0055A6EB /* DJKFlipper.framework */,
+				D6039C041B57591C0055A6EB /* DJKFlipperTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -201,6 +224,12 @@
 			mainGroup = D5A6CF5719DDE5F6000C359A;
 			productRefGroup = D5A6CF6119DDE5F6000C359A /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = D6039BFD1B57591C0055A6EB /* Products */;
+					ProjectRef = D6A577691B5751AB00FD275A /* DJKFlipper.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D5A6CF5F19DDE5F6000C359A /* DJKFlipperExample */,
@@ -208,6 +237,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		D6039C021B57591C0055A6EB /* DJKFlipper.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = DJKFlipper.framework;
+			remoteRef = D6039C011B57591C0055A6EB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D6039C041B57591C0055A6EB /* DJKFlipperTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = DJKFlipperTests.xctest;
+			remoteRef = D6039C031B57591C0055A6EB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D5A6CF5E19DDE5F6000C359A /* Resources */ = {
