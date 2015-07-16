@@ -14,17 +14,17 @@ public enum FlipperState {
     case Inactive
 }
 
-@objc protocol DJKFlipperDataSource {
+@objc public protocol DJKFlipperDataSource {
     func numberOfPages(flipper:DJKFlipper) -> NSInteger
     func viewForPage(page:NSInteger, flipper:DJKFlipper) -> UIView
 }
 
-class DJKFlipper: UIView {
+public class DJKFlipper: UIView {
     
     //MARK: - Property Declarations
     
     var viewControllerSnapShots:[UIImage?] = []
-    var dataSource:DJKFlipperDataSource? {
+    public var dataSource:DJKFlipperDataSource? {
         didSet {
             updateTheActiveView()
             //set an array with capacity for total amount of possible pages
@@ -52,7 +52,7 @@ class DJKFlipper: UIView {
         initHelper()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         initHelper()
     }
@@ -70,7 +70,7 @@ class DJKFlipper: UIView {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
     
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         self.staticView.updateFrame(self.frame)
     }

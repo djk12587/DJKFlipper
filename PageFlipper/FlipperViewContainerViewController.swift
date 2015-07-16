@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DJKFlipper
 
 class FlipperViewContainerViewController: UIViewController, DJKFlipperDataSource {
     
