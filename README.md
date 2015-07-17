@@ -65,4 +65,7 @@ func viewForPage(page: NSInteger, flipper: DJKFlipper) -> UIView {
         return viewController.view
 }
 ```
-
+## TODO
+- Add a reload method when datasource changes.
+- Add some error handling :)
+- Add ability to change flip from left/right to top/bottom
