@@ -2,7 +2,7 @@
 //  DJKFlipper.h
 //  DJKFlipper
 //
-//  Created by Koza, Daniel on 7/15/15.
+//  Created by Koza, Daniel on 7/17/15.
 //  Copyright (c) 2015 Koza, Daniel. All rights reserved.
 //
 
@@ -15,6 +15,5 @@ FOUNDATION_EXPORT double DJKFlipperVersionNumber;
 FOUNDATION_EXPORT const unsigned char DJKFlipperVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <DJKFlipper/PublicHeader.h>
-#import <DJKFlipper/DJKFlipper.h>
 
 

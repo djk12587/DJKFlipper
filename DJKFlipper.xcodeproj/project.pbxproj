@@ -1,0 +1,445 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D62ECB971B59892C00A1A39A /* DJKFlipper.h in Headers */ = {isa = PBXBuildFile; fileRef = D62ECB961B59892C00A1A39A /* DJKFlipper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D62ECB9D1B59892C00A1A39A /* DJKFlipper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D62ECB911B59892C00A1A39A /* DJKFlipper.framework */; };
+		D62ECBA41B59892C00A1A39A /* DJKFlipperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62ECBA31B59892C00A1A39A /* DJKFlipperTests.swift */; };
+		D62ECBB31B5989E500A1A39A /* DJKFlipper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62ECBAD1B5989E500A1A39A /* DJKFlipper.swift */; };
+		D62ECBB41B5989E500A1A39A /* DJKAnimationLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62ECBAE1B5989E500A1A39A /* DJKAnimationLayer.swift */; };
+		D62ECBB51B5989E500A1A39A /* DJKStaticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62ECBAF1B5989E500A1A39A /* DJKStaticView.swift */; };
+		D62ECBB61B5989E500A1A39A /* DJKScreenShotExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62ECBB01B5989E500A1A39A /* DJKScreenShotExtension.swift */; };
+		D62ECBB71B5989E500A1A39A /* DJKArrayHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62ECBB11B5989E500A1A39A /* DJKArrayHelper.swift */; };
+		D62ECBB81B5989E500A1A39A /* DJKFlipperConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62ECBB21B5989E500A1A39A /* DJKFlipperConstants.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D62ECB9E1B59892C00A1A39A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D62ECB881B59892C00A1A39A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D62ECB901B59892C00A1A39A;
+			remoteInfo = DJKFlipper;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D62ECB911B59892C00A1A39A /* DJKFlipper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DJKFlipper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D62ECB951B59892C00A1A39A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D62ECB961B59892C00A1A39A /* DJKFlipper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DJKFlipper.h; sourceTree = "<group>"; };
+		D62ECB9C1B59892C00A1A39A /* DJKFlipperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DJKFlipperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D62ECBA21B59892C00A1A39A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D62ECBA31B59892C00A1A39A /* DJKFlipperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DJKFlipperTests.swift; sourceTree = "<group>"; };
+		D62ECBAD1B5989E500A1A39A /* DJKFlipper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKFlipper.swift; sourceTree = "<group>"; };
+		D62ECBAE1B5989E500A1A39A /* DJKAnimationLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKAnimationLayer.swift; sourceTree = "<group>"; };
+		D62ECBAF1B5989E500A1A39A /* DJKStaticView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKStaticView.swift; sourceTree = "<group>"; };
+		D62ECBB01B5989E500A1A39A /* DJKScreenShotExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKScreenShotExtension.swift; sourceTree = "<group>"; };
+		D62ECBB11B5989E500A1A39A /* DJKArrayHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKArrayHelper.swift; sourceTree = "<group>"; };
+		D62ECBB21B5989E500A1A39A /* DJKFlipperConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKFlipperConstants.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D62ECB8D1B59892C00A1A39A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D62ECB991B59892C00A1A39A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D62ECB9D1B59892C00A1A39A /* DJKFlipper.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D62ECB871B59892C00A1A39A = {
+			isa = PBXGroup;
+			children = (
+				D62ECB931B59892C00A1A39A /* DJKFlipper */,
+				D62ECBA01B59892C00A1A39A /* DJKFlipperTests */,
+				D62ECB921B59892C00A1A39A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D62ECB921B59892C00A1A39A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D62ECB911B59892C00A1A39A /* DJKFlipper.framework */,
+				D62ECB9C1B59892C00A1A39A /* DJKFlipperTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D62ECB931B59892C00A1A39A /* DJKFlipper */ = {
+			isa = PBXGroup;
+			children = (
+				D62ECB961B59892C00A1A39A /* DJKFlipper.h */,
+				D62ECBAD1B5989E500A1A39A /* DJKFlipper.swift */,
+				D62ECBAE1B5989E500A1A39A /* DJKAnimationLayer.swift */,
+				D62ECBAF1B5989E500A1A39A /* DJKStaticView.swift */,
+				D62ECBB01B5989E500A1A39A /* DJKScreenShotExtension.swift */,
+				D62ECBB11B5989E500A1A39A /* DJKArrayHelper.swift */,
+				D62ECBB21B5989E500A1A39A /* DJKFlipperConstants.swift */,
+				D62ECB941B59892C00A1A39A /* Supporting Files */,
+			);
+			path = DJKFlipper;
+			sourceTree = "<group>";
+		};
+		D62ECB941B59892C00A1A39A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D62ECB951B59892C00A1A39A /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D62ECBA01B59892C00A1A39A /* DJKFlipperTests */ = {
+			isa = PBXGroup;
+			children = (
+				D62ECBA31B59892C00A1A39A /* DJKFlipperTests.swift */,
+				D62ECBA11B59892C00A1A39A /* Supporting Files */,
+			);
+			path = DJKFlipperTests;
+			sourceTree = "<group>";
+		};
+		D62ECBA11B59892C00A1A39A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D62ECBA21B59892C00A1A39A /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D62ECB8E1B59892C00A1A39A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D62ECB971B59892C00A1A39A /* DJKFlipper.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D62ECB901B59892C00A1A39A /* DJKFlipper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D62ECBA71B59892C00A1A39A /* Build configuration list for PBXNativeTarget "DJKFlipper" */;
+			buildPhases = (
+				D62ECB8C1B59892C00A1A39A /* Sources */,
+				D62ECB8D1B59892C00A1A39A /* Frameworks */,
+				D62ECB8E1B59892C00A1A39A /* Headers */,
+				D62ECB8F1B59892C00A1A39A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DJKFlipper;
+			productName = DJKFlipper;
+			productReference = D62ECB911B59892C00A1A39A /* DJKFlipper.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D62ECB9B1B59892C00A1A39A /* DJKFlipperTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D62ECBAA1B59892C00A1A39A /* Build configuration list for PBXNativeTarget "DJKFlipperTests" */;
+			buildPhases = (
+				D62ECB981B59892C00A1A39A /* Sources */,
+				D62ECB991B59892C00A1A39A /* Frameworks */,
+				D62ECB9A1B59892C00A1A39A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D62ECB9F1B59892C00A1A39A /* PBXTargetDependency */,
+			);
+			name = DJKFlipperTests;
+			productName = DJKFlipperTests;
+			productReference = D62ECB9C1B59892C00A1A39A /* DJKFlipperTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D62ECB881B59892C00A1A39A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = "Koza, Daniel";
+				TargetAttributes = {
+					D62ECB901B59892C00A1A39A = {
+						CreatedOnToolsVersion = 6.4;
+					};
+					D62ECB9B1B59892C00A1A39A = {
+						CreatedOnToolsVersion = 6.4;
+					};
+				};
+			};
+			buildConfigurationList = D62ECB8B1B59892C00A1A39A /* Build configuration list for PBXProject "DJKFlipper" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D62ECB871B59892C00A1A39A;
+			productRefGroup = D62ECB921B59892C00A1A39A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D62ECB901B59892C00A1A39A /* DJKFlipper */,
+				D62ECB9B1B59892C00A1A39A /* DJKFlipperTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D62ECB8F1B59892C00A1A39A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D62ECB9A1B59892C00A1A39A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D62ECB8C1B59892C00A1A39A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D62ECBB81B5989E500A1A39A /* DJKFlipperConstants.swift in Sources */,
+				D62ECBB51B5989E500A1A39A /* DJKStaticView.swift in Sources */,
+				D62ECBB41B5989E500A1A39A /* DJKAnimationLayer.swift in Sources */,
+				D62ECBB31B5989E500A1A39A /* DJKFlipper.swift in Sources */,
+				D62ECBB61B5989E500A1A39A /* DJKScreenShotExtension.swift in Sources */,
+				D62ECBB71B5989E500A1A39A /* DJKArrayHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D62ECB981B59892C00A1A39A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D62ECBA41B59892C00A1A39A /* DJKFlipperTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D62ECB9F1B59892C00A1A39A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D62ECB901B59892C00A1A39A /* DJKFlipper */;
+			targetProxy = D62ECB9E1B59892C00A1A39A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		D62ECBA51B59892C00A1A39A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		D62ECBA61B59892C00A1A39A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		D62ECBA81B59892C00A1A39A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = DJKFlipper/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D62ECBA91B59892C00A1A39A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = DJKFlipper/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		D62ECBAB1B59892C00A1A39A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = DJKFlipperTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D62ECBAC1B59892C00A1A39A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = DJKFlipperTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D62ECB8B1B59892C00A1A39A /* Build configuration list for PBXProject "DJKFlipper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D62ECBA51B59892C00A1A39A /* Debug */,
+				D62ECBA61B59892C00A1A39A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D62ECBA71B59892C00A1A39A /* Build configuration list for PBXNativeTarget "DJKFlipper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D62ECBA81B59892C00A1A39A /* Debug */,
+				D62ECBA91B59892C00A1A39A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D62ECBAA1B59892C00A1A39A /* Build configuration list for PBXNativeTarget "DJKFlipperTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D62ECBAB1B59892C00A1A39A /* Debug */,
+				D62ECBAC1B59892C00A1A39A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D62ECB881B59892C00A1A39A /* Project object */;
+}

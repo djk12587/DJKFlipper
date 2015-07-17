@@ -1,15 +1,15 @@
 //
 //  ViewController.swift
-//  PageFlipper
+//  DJKFlipperExample
 //
-//  Created by Daniel Koza on 10/2/14.
-//  Copyright (c) 2014 Daniel Koza. All rights reserved.
+//  Created by Koza, Daniel on 7/17/15.
+//  Copyright (c) 2015 Koza, Daniel. All rights reserved.
 //
 
 import UIKit
 import DJKFlipper
 
-class FlipperViewContainerViewController: UIViewController, DJKFlipperDataSource {
+class ViewController: UIViewController, DJKFlipperDataSource {
     
     @IBOutlet weak var flipView: DJKFlipper!
     
@@ -17,12 +17,12 @@ class FlipperViewContainerViewController: UIViewController, DJKFlipperDataSource
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        
         var page1 = PageTestViewController(nibName: "PageTestViewController", bundle: nil)
         page1.view.frame = self.view.bounds
         page1.backgroundImage.image = UIImage(named: "page1")
         page1.view.layoutSubviews()
-                
+        
         var page2 = PageTestViewController(nibName: "PageTestViewController", bundle: nil)
         page2.view.frame = self.view.bounds
         page2.backgroundImage.image = UIImage(named: "page2")
@@ -50,7 +50,7 @@ class FlipperViewContainerViewController: UIViewController, DJKFlipperDataSource
         
         //add the view controllers to the flipperViewArray
         flipperViewArray += [page1,page2,page3,page4,page5,page6]
-
+        
         flipView.dataSource = self
     }
     

@@ -1,9 +1,9 @@
 //
 //  AppDelegate.swift
-//  PageFlipper
+//  DJKFlipperExample
 //
-//  Created by Daniel Koza on 10/2/14.
-//  Copyright (c) 2014 Daniel Koza. All rights reserved.
+//  Created by Koza, Daniel on 7/17/15.
+//  Copyright (c) 2015 Koza, Daniel. All rights reserved.
 //
 
 import UIKit
