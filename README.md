@@ -32,7 +32,7 @@ $ pod install
 
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that automates the process of adding frameworks to your Cocoa application.
 
-To integrate Alamofire into your Xcode project using Carthage, specify it in your `Cartfile`:
+To integrate DJKFlipper into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
 github "DJK12587/DJKFlipper"
