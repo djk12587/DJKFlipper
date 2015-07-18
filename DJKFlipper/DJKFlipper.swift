@@ -26,19 +26,14 @@ public class DJKFlipper: UIView {
     var viewControllerSnapShots:[UIImage?] = []
     public var dataSource:DJKFlipperDataSource? {
         didSet {
-            updateTheActiveView()
-            //set an array with capacity for total amount of possible pages
-            viewControllerSnapShots.removeAll(keepCapacity: false)
-            for index in 1...dataSource!.numberOfPages(self) {
-                viewControllerSnapShots.append(nil)
-            }
+            reload()
         }
     }
     
     lazy var staticView:DJKStaticView = {
         let view = DJKStaticView(frame: self.frame)
         return view
-    }()
+        }()
     
     var flipperState = FlipperState.Inactive
     var activeView:UIView?
@@ -136,7 +131,6 @@ public class DJKFlipper: UIView {
                 flipperState = .Began
             }
             
-            var screenBounds = UIScreen.mainScreen().bounds
             var animationLayer = DJKAnimationLayer(frame: self.staticView.rightSide.bounds, isFirstOrLast:false)
             
             //if an animation has a lower zPosition then it will not be visible throughout the entire animation cycle
@@ -188,7 +182,7 @@ public class DJKFlipper: UIView {
     //MARK:Pan Gesture State Changed
     
     func panChanged(gesture:UIPanGestureRecognizer, translation:CGFloat, var progress:CGFloat) {
-
+        
         if var currentDJKAnimationLayer = animatingLayers.last {
             if currentDJKAnimationLayer.flipAnimationStatus == .Beginning {
                 animationStatusBeginning(currentDJKAnimationLayer, translation: translation, progress: progress, gesture: gesture)
@@ -204,7 +198,7 @@ public class DJKFlipper: UIView {
     //MARK: Pan Gesture State Ended
     
     func panEnded(gesture:UIPanGestureRecognizer, translation:CGFloat) {
-
+        
         if var currentDJKAnimationLayer = animatingLayers.last {
             currentDJKAnimationLayer.flipAnimationStatus = .Completing
             
@@ -224,11 +218,11 @@ public class DJKFlipper: UIView {
     func didFlipToNewPage(animationLayer:DJKAnimationLayer, gesture:UIPanGestureRecognizer, translation:CGFloat) -> Bool {
         
         var releaseSpeed = getReleaseSpeed(translation, gesture: gesture)
-
+        
         var didFlipToNewPage = false
         if animationLayer.flipDirection == .Left && fabs(releaseSpeed) > DJKFlipperConstants.SpeedThreshold && !animationLayer.isFirstOrLastPage && releaseSpeed < 0 ||
-           animationLayer.flipDirection == .Right && fabs(releaseSpeed) > DJKFlipperConstants.SpeedThreshold && !animationLayer.isFirstOrLastPage && releaseSpeed > 0 {
-            didFlipToNewPage = true
+            animationLayer.flipDirection == .Right && fabs(releaseSpeed) > DJKFlipperConstants.SpeedThreshold && !animationLayer.isFirstOrLastPage && releaseSpeed > 0 {
+                didFlipToNewPage = true
         }
         return didFlipToNewPage
     }
@@ -503,7 +497,7 @@ public class DJKFlipper: UIView {
     //MARK: - Flip Animation Methods
     
     func setUpForFlip(animationLayer:DJKAnimationLayer, progress:CGFloat, animated:Bool, clearFlip:Bool) {
-
+        
         var newAngle:CGFloat = animationLayer.flipProperties.startAngle + progress * (animationLayer.flipProperties.endFlipAngle - animationLayer.flipProperties.startAngle)
         
         var duration:CGFloat
@@ -544,7 +538,7 @@ public class DJKFlipper: UIView {
     func clearFlipAfterCompletion(animationLayer:DJKAnimationLayer) {
         weak var weakSelf = self
         CATransaction.setCompletionBlock { () -> Void in
-    
+            
             dispatch_async(dispatch_get_main_queue(), {
                 if animationLayer.flipAnimationStatus == .Interrupt {
                     animationLayer.flipAnimationStatus = .Completing
@@ -647,5 +641,16 @@ public class DJKFlipper: UIView {
     
     func deviceOrientationDidChangeNotification() {
         clearAnimations()
+    }
+    
+    //MARK: - Public Methods
+    
+    public func reload() {
+        updateTheActiveView()
+        //set an array with capacity for total amount of possible pages
+        viewControllerSnapShots.removeAll(keepCapacity: false)
+        for index in 1...dataSource!.numberOfPages(self) {
+            viewControllerSnapShots.append(nil)
+        }
     }
 }
