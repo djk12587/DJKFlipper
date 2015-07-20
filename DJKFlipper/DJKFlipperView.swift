@@ -15,11 +15,11 @@ public enum FlipperState {
 }
 
 @objc public protocol DJKFlipperDataSource {
-    func numberOfPages(flipper:DJKFlipper) -> NSInteger
-    func viewForPage(page:NSInteger, flipper:DJKFlipper) -> UIView
+    func numberOfPages(flipper:DJKFlipperView) -> NSInteger
+    func viewForPage(page:NSInteger, flipper:DJKFlipperView) -> UIView
 }
 
-public class DJKFlipper: UIView {
+public class DJKFlipperView: UIView {
     
     //MARK: - Property Declarations
     

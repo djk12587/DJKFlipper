@@ -11,7 +11,7 @@ import DJKFlipper
 
 class ViewController: UIViewController, DJKFlipperDataSource {
     
-    @IBOutlet weak var flipView: DJKFlipper!
+    @IBOutlet weak var flipView: DJKFlipperView!
     
     var flipperViewArray:[UIViewController] = []
     
@@ -60,11 +60,11 @@ class ViewController: UIViewController, DJKFlipperDataSource {
     
     //MARK: - FlipperDataSource Methods
     
-    func numberOfPages(flipper: DJKFlipper) -> NSInteger {
+    func numberOfPages(flipper: DJKFlipperView) -> NSInteger {
         return flipperViewArray.count
     }
     
-    func viewForPage(page: NSInteger, flipper: DJKFlipper) -> UIView {
+    func viewForPage(page: NSInteger, flipper: DJKFlipperView) -> UIView {
         var viewController = flipperViewArray[page] as! PageTestViewController
         return viewController.view
     }

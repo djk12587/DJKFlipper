@@ -10,7 +10,7 @@
 		D62ECB971B59892C00A1A39A /* DJKFlipper.h in Headers */ = {isa = PBXBuildFile; fileRef = D62ECB961B59892C00A1A39A /* DJKFlipper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D62ECB9D1B59892C00A1A39A /* DJKFlipper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D62ECB911B59892C00A1A39A /* DJKFlipper.framework */; };
 		D62ECBA41B59892C00A1A39A /* DJKFlipperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62ECBA31B59892C00A1A39A /* DJKFlipperTests.swift */; };
-		D62ECBB31B5989E500A1A39A /* DJKFlipper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62ECBAD1B5989E500A1A39A /* DJKFlipper.swift */; };
+		D62ECBB31B5989E500A1A39A /* DJKFlipperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62ECBAD1B5989E500A1A39A /* DJKFlipperView.swift */; };
 		D62ECBB41B5989E500A1A39A /* DJKAnimationLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62ECBAE1B5989E500A1A39A /* DJKAnimationLayer.swift */; };
 		D62ECBB51B5989E500A1A39A /* DJKStaticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62ECBAF1B5989E500A1A39A /* DJKStaticView.swift */; };
 		D62ECBB61B5989E500A1A39A /* DJKScreenShotExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62ECBB01B5989E500A1A39A /* DJKScreenShotExtension.swift */; };
@@ -35,7 +35,7 @@
 		D62ECB9C1B59892C00A1A39A /* DJKFlipperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DJKFlipperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D62ECBA21B59892C00A1A39A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D62ECBA31B59892C00A1A39A /* DJKFlipperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DJKFlipperTests.swift; sourceTree = "<group>"; };
-		D62ECBAD1B5989E500A1A39A /* DJKFlipper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKFlipper.swift; sourceTree = "<group>"; };
+		D62ECBAD1B5989E500A1A39A /* DJKFlipperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKFlipperView.swift; sourceTree = "<group>"; };
 		D62ECBAE1B5989E500A1A39A /* DJKAnimationLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKAnimationLayer.swift; sourceTree = "<group>"; };
 		D62ECBAF1B5989E500A1A39A /* DJKStaticView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKStaticView.swift; sourceTree = "<group>"; };
 		D62ECBB01B5989E500A1A39A /* DJKScreenShotExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DJKScreenShotExtension.swift; sourceTree = "<group>"; };
@@ -83,13 +83,13 @@
 		D62ECB931B59892C00A1A39A /* DJKFlipper */ = {
 			isa = PBXGroup;
 			children = (
-				D62ECB961B59892C00A1A39A /* DJKFlipper.h */,
-				D62ECBAD1B5989E500A1A39A /* DJKFlipper.swift */,
 				D62ECBAE1B5989E500A1A39A /* DJKAnimationLayer.swift */,
-				D62ECBAF1B5989E500A1A39A /* DJKStaticView.swift */,
-				D62ECBB01B5989E500A1A39A /* DJKScreenShotExtension.swift */,
 				D62ECBB11B5989E500A1A39A /* DJKArrayHelper.swift */,
+				D62ECB961B59892C00A1A39A /* DJKFlipper.h */,
 				D62ECBB21B5989E500A1A39A /* DJKFlipperConstants.swift */,
+				D62ECBAD1B5989E500A1A39A /* DJKFlipperView.swift */,
+				D62ECBB01B5989E500A1A39A /* DJKScreenShotExtension.swift */,
+				D62ECBAF1B5989E500A1A39A /* DJKStaticView.swift */,
 				D62ECB941B59892C00A1A39A /* Supporting Files */,
 			);
 			path = DJKFlipper;
@@ -230,7 +230,7 @@
 				D62ECBB81B5989E500A1A39A /* DJKFlipperConstants.swift in Sources */,
 				D62ECBB51B5989E500A1A39A /* DJKStaticView.swift in Sources */,
 				D62ECBB41B5989E500A1A39A /* DJKAnimationLayer.swift in Sources */,
-				D62ECBB31B5989E500A1A39A /* DJKFlipper.swift in Sources */,
+				D62ECBB31B5989E500A1A39A /* DJKFlipperView.swift in Sources */,
 				D62ECBB61B5989E500A1A39A /* DJKScreenShotExtension.swift in Sources */,
 				D62ECBB71B5989E500A1A39A /* DJKArrayHelper.swift in Sources */,
 			);
