@@ -61,8 +61,7 @@ func viewForPage(page:NSInteger, flipper:DJKFlipper) -> UIView
  - Everytime a page will flip you will need to pass the view of the viewcontroller you want to display.
 ```swift
 func viewForPage(page: NSInteger, flipper: DJKFlipper) -> UIView {
-        var viewController = yourViewControllerArray[page] as! YourViewController
-        return viewController.view
+        return yourViewControllerArray[page].view
 }
 ```
 ## TODO
