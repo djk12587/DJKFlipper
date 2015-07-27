@@ -65,8 +65,7 @@ class ViewController: UIViewController, DJKFlipperDataSource {
     }
     
     func viewForPage(page: NSInteger, flipper: DJKFlipperView) -> UIView {
-        var viewController = flipperViewArray[page] as! PageTestViewController
-        return viewController.view
+        return flipperViewArray[page].view
     }
 }
 
