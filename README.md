@@ -52,15 +52,15 @@ import DJKFlipper
 
 ### DataSource Methods
 ```swift
-func numberOfPages(flipper:DJKFlipper) -> NSInteger
+func numberOfPages(flipper:DJKFlipperView) -> NSInteger
 ```
  - Give DJKFlipper the number of pages you want to flip through
 ```swift
-func viewForPage(page:NSInteger, flipper:DJKFlipper) -> UIView
+func viewForPage(page:NSInteger, flipper:DJKFlipperView) -> UIView
 ```
  - Everytime a page will flip you will need to pass the view of the viewcontroller you want to display.
 ```swift
-func viewForPage(page: NSInteger, flipper: DJKFlipper) -> UIView {
+func viewForPage(page: NSInteger, flipper: DJKFlipperView) -> UIView {
         return yourViewControllerArray[page].view
 }
 ```
