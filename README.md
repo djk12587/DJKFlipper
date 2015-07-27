@@ -67,3 +67,5 @@ func viewForPage(page: NSInteger, flipper: DJKFlipperView) -> UIView {
 ## TODO
 - Add some error handling :)
 - Add ability to change flip from left/right to top/bottom
+- Add unit tests
+- Add documentation ;)
