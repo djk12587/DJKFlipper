@@ -80,14 +80,14 @@ As you pan your finger you will perform a CATransform3DRotate on the y axis of t
 
 Here is the basic code to perform a flip animation on a layer (animationLayer CALayer).
 ```swift
-    var t = CATransform3DIdentity
-    t.m34 = 1.0/850 //Adds depth to the animation
-    t = CATransform3DRotate(t, newRadianAngleValue, 0, 1, 0)
+var t = CATransform3DIdentity
+t.m34 = 1.0/850 //Adds depth to the animation
+t = CATransform3DRotate(t, newRadianAngleValue, 0, 1, 0)
 
-    CATransaction.begin()
-    CATransaction.setAnimationDuration(0)
-    yourAnimationCALayer.transform = t
-    CATransaction.commit()
+CATransaction.begin()
+CATransaction.setAnimationDuration(0)
+yourAnimationCALayer.transform = t
+CATransaction.commit()
 ```
 
 ## TODO
