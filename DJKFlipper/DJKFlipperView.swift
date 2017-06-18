@@ -99,7 +99,7 @@ open class DJKFlipperView: UIView {
     
     //MARK: - Pan Gesture States
     
-    func pan(_ gesture:UIPanGestureRecognizer) {
+    @objc func pan(_ gesture:UIPanGestureRecognizer) {
         
         let translation = gesture.translation(in: gesture.view!).x
         let progress = translation / gesture.view!.bounds.size.width
@@ -607,7 +607,7 @@ open class DJKFlipperView: UIView {
         return animatingLayers.sorted(by: {$0.zPosition > $1.zPosition}).first
     }
     
-    func clearAnimations() {
+    @objc func clearAnimations() {
         if flipperState != .inactive {
             //remove all animation layers and update the static view
             updateTheActiveView()
@@ -627,7 +627,7 @@ open class DJKFlipperView: UIView {
         }
     }
     
-    func deviceOrientationDidChangeNotification() {
+    @objc func deviceOrientationDidChangeNotification() {
         clearAnimations()
     }
     
