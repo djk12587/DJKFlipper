@@ -30,8 +30,8 @@ class DJKStaticView: CATransformLayer {
         frame.size.width = frame.size.width / 2
         frame.origin.x = 0
         lSide.frame = frame
-        lSide.contentsScale = UIScreen.mainScreen().scale
-        lSide.backgroundColor = UIColor.blackColor().CGColor
+        lSide.contentsScale = UIScreen.main.scale
+        lSide.backgroundColor = UIColor.black.cgColor
         
         return lSide
     }()
@@ -42,29 +42,29 @@ class DJKStaticView: CATransformLayer {
         frame.size.width = frame.size.width / 2
         frame.origin.x = frame.size.width
         rSide.frame = frame
-        rSide.contentsScale = UIScreen.mainScreen().scale
-        rSide.backgroundColor = UIColor.blackColor().CGColor
+        rSide.contentsScale = UIScreen.main.scale
+        rSide.backgroundColor = UIColor.black.cgColor
         return rSide
         }()
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.addSublayer(leftSide)
         self.addSublayer(rightSide)
     }
 
-    override init(layer: AnyObject!) {
+    override init(layer: Any) {
         super.init(layer: layer)
         self.addSublayer(leftSide)
         self.addSublayer(rightSide)
     }
     
-    func updateFrame(newFrame:CGRect) {
+    func updateFrame(_ newFrame:CGRect) {
         self.frame = newFrame
         updatePageLayerFrames(newFrame)
     }
     
-    private func updatePageLayerFrames(newFrame:CGRect) {
+    fileprivate func updatePageLayerFrames(_ newFrame:CGRect) {
         var frame = newFrame
         
         frame.size.width = frame.size.width / 2
@@ -74,10 +74,10 @@ class DJKStaticView: CATransformLayer {
         rightSide.frame = frame
     }
     
-    func setTheRightSide(image:UIImage) {
+    func setTheRightSide(_ image:UIImage) {
         
-        var tmpImageRef = image.CGImage
-        var rightImgRef = CGImageCreateWithImageInRect(tmpImageRef, CGRectMake(image.size.width/2 * UIScreen.mainScreen().scale, 0, image.size.width/2 * UIScreen.mainScreen().scale, image.size.height * UIScreen.mainScreen().scale))
+        let tmpImageRef = image.cgImage
+        let rightImgRef = tmpImageRef?.cropping(to: CGRect(x: image.size.width/2 * UIScreen.main.scale, y: 0, width: image.size.width/2 * UIScreen.main.scale, height: image.size.height * UIScreen.main.scale))
         
         CATransaction.begin()
         CATransaction.setAnimationDuration(0)
@@ -85,10 +85,10 @@ class DJKStaticView: CATransformLayer {
         CATransaction.commit()
     }
     
-    func setTheLeftSide(image:UIImage) {
-        var tmpImageRef = image.CGImage
+    func setTheLeftSide(_ image:UIImage) {
+        let tmpImageRef = image.cgImage
         
-        var leftImgRef = CGImageCreateWithImageInRect(tmpImageRef, CGRectMake(0, 0, image.size.width/2 * UIScreen.mainScreen().scale, image.size.height * UIScreen.mainScreen().scale))
+        let leftImgRef = tmpImageRef?.cropping(to: CGRect(x: 0, y: 0, width: image.size.width/2 * UIScreen.main.scale, height: image.size.height * UIScreen.main.scale))
         
         CATransaction.begin()
         CATransaction.setAnimationDuration(0)
