@@ -10,11 +10,12 @@ import Foundation
 
 //stolen from http://stackoverflow.com/a/24939100
 extension Array {
-    mutating func removeObject<U: Equatable>(object: U) -> Bool {
-        for (idx, objectToCompare) in enumerate(self) {
+    @discardableResult
+    mutating func remove<U: Equatable>(object: U) -> Bool {
+        for (idx, objectToCompare) in self.enumerated() {  //in old swift use enumerate(self)
             if let to = objectToCompare as? U {
                 if object == to {
-                    self.removeAtIndex(idx)
+                    self.remove(at: idx)
                     return true
                 }
             }

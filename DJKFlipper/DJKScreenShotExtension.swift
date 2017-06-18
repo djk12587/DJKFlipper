@@ -12,18 +12,18 @@ import UIKit
 
 extension UIView {
     func takeSnapshot() -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale)
-        self.layer.renderInContext(UIGraphicsGetCurrentContext())
-        var image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.main.scale)
+        self.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return image
+        return image!
     }
     
     func takeSnapShotWithoutScreenUpdate() -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale)
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.main.scale)
         var image:UIImage? = nil
         
-        if self.drawViewHierarchyInRect(self.bounds, afterScreenUpdates: false) {
+        if self.drawHierarchy(in: self.bounds, afterScreenUpdates: false) {
             image = UIGraphicsGetImageFromCurrentImageContext()
         }
 
