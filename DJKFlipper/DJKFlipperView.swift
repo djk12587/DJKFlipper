@@ -57,7 +57,7 @@ open class DJKFlipperView: UIView {
         NotificationCenter.default.addObserver(self, selector: #selector(DJKFlipperView.clearAnimations), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(DJKFlipperView.pan(_:)))
-        self.addGestureRecognizer(panGesture)
+        addGestureRecognizer(panGesture)
     }
     
     deinit {
@@ -67,42 +67,37 @@ open class DJKFlipperView: UIView {
     
     override open func layoutSubviews() {
         super.layoutSubviews()
-        self.staticView.updateFrame(self.frame)
+        staticView.updateFrame(frame)
     }
     
     func updateTheActiveView() {
+        guard let datasource = dataSource, datasource.numberOfPages(self) > 0 else { return }
         
-        if let dataSource = self.dataSource {
-            if dataSource.numberOfPages(self) > 0 {
-                
-                if let activeView = self.activeView {
-                    if activeView.isDescendant(of: self) {
-                        activeView.removeFromSuperview()
-                    }
-                }
-                
-                self.activeView = dataSource.viewForPage(self.currentPage, flipper: self)
-                self.addSubview(self.activeView!)
-                
-                //set up the constraints
-                self.activeView?.translatesAutoresizingMaskIntoConstraints = false
-                let viewDictionary = ["activeView":self.activeView!]
-                let constraintTop = NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[activeView]-0-|", options: NSLayoutFormatOptions.alignAllTop, metrics: nil, views: viewDictionary)
-                let constraintLeft = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[activeView]-0-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: nil, views: viewDictionary)
-                
-                self.addConstraints(constraintTop)
-                self.addConstraints(constraintLeft)
-                
-            }
+        if let activeView = self.activeView, activeView.isDescendant(of: self) {
+            activeView.removeFromSuperview()
         }
+        
+        let activeView = datasource.viewForPage(currentPage, flipper: self)
+        self.activeView = activeView
+
+        addSubview(activeView)
+        
+        //set up the constraints
+        self.activeView?.translatesAutoresizingMaskIntoConstraints = false
+        let viewDictionary = ["activeView" : activeView]
+        let constraintTop = NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[activeView]-0-|", options: NSLayoutFormatOptions.alignAllTop, metrics: nil, views: viewDictionary)
+        let constraintLeft = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[activeView]-0-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: nil, views: viewDictionary)
+        
+        addConstraints(constraintTop)
+        addConstraints(constraintLeft)
     }
     
     //MARK: - Pan Gesture States
     
     @objc func pan(_ gesture:UIPanGestureRecognizer) {
-        
-        let translation = gesture.translation(in: gesture.view!).x
-        let progress = translation / gesture.view!.bounds.size.width
+        guard let gesturesView = gesture.view else { return }
+        let translation = gesture.translation(in: gesturesView).x
+        let progress = translation / gesturesView.bounds.size.width
         
         switch (gesture.state) {
         case .began:
@@ -131,7 +126,7 @@ open class DJKFlipperView: UIView {
                 flipperState = .began
             }
             
-            let animationLayer = DJKAnimationLayer(frame: self.staticView.rightSide.bounds, isFirstOrLast:false)
+            let animationLayer = DJKAnimationLayer(frame: staticView.rightSide.bounds, isFirstOrLast:false)
             
             //if an animation has a lower zPosition then it will not be visible throughout the entire animation cycle
             if let hiZAnimLayer = getHighestZIndexDJKAnimationLayer() {
@@ -146,23 +141,24 @@ open class DJKFlipperView: UIView {
     
     //MARK: Pan Began Helpers
     
-    func checkIfAnimationsArePassedHalfway() -> Bool{
+    func checkIfAnimationsArePassedHalfway() -> Bool {
         var passedHalfWay = false
         
         if flipperState == FlipperState.inactive {
             passedHalfWay = true
-        } else if animatingLayers.count > 0 {
+        } else if !animatingLayers.isEmpty {
             //LOOP through this and check the new animation layer with current animations to make sure we dont allow the same animation to happen on a flip up
             for animLayer in animatingLayers {
                 let animationLayer = animLayer as DJKAnimationLayer
                 var layerIsPassedHalfway = false
                 
-                let rotationX = animationLayer.presentation()?.value(forKeyPath: "transform.rotation.x") as! CGFloat
-                
-                if animationLayer.flipDirection == .right && rotationX > 0 {
-                    layerIsPassedHalfway = true
-                } else if animationLayer.flipDirection == .left && rotationX == 0 {
-                    layerIsPassedHalfway = true
+                if let rotationX = animationLayer.presentation()?.value(forKeyPath: "transform.rotation.x") as? CGFloat
+                {
+                    if animationLayer.flipDirection == .right && rotationX > 0 {
+                        layerIsPassedHalfway = true
+                    } else if animationLayer.flipDirection == .left && rotationX == 0 {
+                        layerIsPassedHalfway = true
+                    }
                 }
                 
                 if layerIsPassedHalfway == false {
@@ -182,35 +178,32 @@ open class DJKFlipperView: UIView {
     //MARK:Pan Gesture State Changed
     
     func panChanged(_ gesture:UIPanGestureRecognizer, translation:CGFloat, progress:CGFloat) {
-        let progress = progress
+        guard let currentDJKAnimationLayer = animatingLayers.last else { return }
         
-        if let currentDJKAnimationLayer = animatingLayers.last {
-            if currentDJKAnimationLayer.flipAnimationStatus == .beginning {
-                animationStatusBeginning(currentDJKAnimationLayer, translation: translation, progress: progress, gesture: gesture)
-            } else if currentDJKAnimationLayer.flipAnimationStatus == .active {
-                animationStatusActive(currentDJKAnimationLayer, translation: translation, progress: progress)
-            } else if currentDJKAnimationLayer.flipAnimationStatus == .completing {
-                enableGesture(gesture, enable: false)
-                animationStatusCompleting(currentDJKAnimationLayer)
-            }
+        if currentDJKAnimationLayer.flipAnimationStatus == .beginning {
+            animationStatusBeginning(currentDJKAnimationLayer, translation: translation, progress: progress, gesture: gesture)
+        } else if currentDJKAnimationLayer.flipAnimationStatus == .active {
+            animationStatusActive(currentDJKAnimationLayer, translation: translation, progress: progress)
+        } else if currentDJKAnimationLayer.flipAnimationStatus == .completing {
+            enableGesture(gesture, enable: false)
+            animationStatusCompleting(currentDJKAnimationLayer)
         }
     }
     
     //MARK: Pan Gesture State Ended
     
     func panEnded(_ gesture:UIPanGestureRecognizer, translation:CGFloat) {
+        guard let currentDJKAnimationLayer = animatingLayers.last else { return }
         
-        if let currentDJKAnimationLayer = animatingLayers.last {
-            currentDJKAnimationLayer.flipAnimationStatus = .completing
-            
-            if didFlipToNewPage(currentDJKAnimationLayer, gesture: gesture, translation: translation) == true {
-                setUpForFlip(currentDJKAnimationLayer, progress: 1.0, animated: true, clearFlip: true)
-            } else {
-                if currentDJKAnimationLayer.isFirstOrLastPage == false {
-                    handleDidNotFlipToNewPage(currentDJKAnimationLayer)
-                }
-                setUpForFlip(currentDJKAnimationLayer, progress: 0.0, animated: true, clearFlip: true)
+        currentDJKAnimationLayer.flipAnimationStatus = .completing
+        
+        if didFlipToNewPage(currentDJKAnimationLayer, gesture: gesture, translation: translation) == true {
+            setUpForFlip(currentDJKAnimationLayer, progress: 1.0, animated: true, clearFlip: true)
+        } else {
+            if currentDJKAnimationLayer.isFirstOrLastPage == false {
+                handleDidNotFlipToNewPage(currentDJKAnimationLayer)
             }
+            setUpForFlip(currentDJKAnimationLayer, progress: 0.0, animated: true, clearFlip: true)
         }
     }
     
@@ -220,16 +213,14 @@ open class DJKFlipperView: UIView {
         
         let releaseSpeed = getReleaseSpeed(translation, gesture: gesture)
         
-        var didFlipToNewPage = false
-        if animationLayer.flipDirection == .left && fabs(releaseSpeed) > DJKFlipperConstants.SpeedThreshold && !animationLayer.isFirstOrLastPage && releaseSpeed < 0 ||
-            animationLayer.flipDirection == .right && fabs(releaseSpeed) > DJKFlipperConstants.SpeedThreshold && !animationLayer.isFirstOrLastPage && releaseSpeed > 0 {
-                didFlipToNewPage = true
-        }
-        return didFlipToNewPage
+        return animationLayer.flipDirection == .left &&
+            fabs(releaseSpeed) > DJKFlipperConstants.SpeedThreshold && !animationLayer.isFirstOrLastPage && releaseSpeed < 0 ||
+            animationLayer.flipDirection == .right &&
+            fabs(releaseSpeed) > DJKFlipperConstants.SpeedThreshold && !animationLayer.isFirstOrLastPage && releaseSpeed > 0
     }
     
-    func getReleaseSpeed(_ translation:CGFloat, gesture:UIPanGestureRecognizer) -> CGFloat {
-        return (translation + gesture.velocity(in: self).x/4) / self.bounds.size.width
+    private func getReleaseSpeed(_ translation:CGFloat, gesture:UIPanGestureRecognizer) -> CGFloat {
+        return (translation + gesture.velocity(in: self).x/4) / bounds.size.width
     }
     
     func handleDidNotFlipToNewPage(_ animationLayer:DJKAnimationLayer) {
@@ -247,39 +238,38 @@ open class DJKFlipperView: UIView {
     //MARK: DJKAnimationLayer State Began
     
     func animationStatusBeginning(_ currentDJKAnimationLayer:DJKAnimationLayer, translation:CGFloat, progress:CGFloat, gesture:UIPanGestureRecognizer) {
-        if currentDJKAnimationLayer.flipAnimationStatus == .beginning {
-            
-            flipperState = .active
-            
-            //set currentDJKAnimationLayers direction
-            currentDJKAnimationLayer.updateFlipDirection(getFlipDirection(translation))
-            
-            if handleConflictingAnimationsWithDJKAnimationLayer(currentDJKAnimationLayer) == false {
-                //check if swipe is fast enough to be considered a complete page swipe
-                if isIncrementalSwipe(gesture, animationLayer: currentDJKAnimationLayer) {
-                    currentDJKAnimationLayer.flipAnimationStatus = .active
-                } else {
-                    currentDJKAnimationLayer.flipAnimationStatus = .completing
-                }
-                
-                updateViewControllerSnapShotsWithCurrentPage(self.currentPage)
-                setUpDJKAnimationLayerFrontAndBack(currentDJKAnimationLayer)
-                setUpStaticLayerForTheDJKAnimationLayer(currentDJKAnimationLayer)
-                
-                self.layer.addSublayer(currentDJKAnimationLayer)
-                //you need to perform a flush otherwise the animation duration is not honored.
-                //more information can be found here http://stackoverflow.com/questions/8661355/implicit-animation-fade-in-is-not-working#comment10764056_8661741
-                CATransaction.flush()
-                
-                //add the animation layer to the view
-                addDJKAnimationLayer()
-                
-                if currentDJKAnimationLayer.flipAnimationStatus == .active {
-                    animationStatusActive(currentDJKAnimationLayer, translation: translation, progress: progress)
-                }
+        guard currentDJKAnimationLayer.flipAnimationStatus == .beginning else { return }
+        
+        flipperState = .active
+        
+        //set currentDJKAnimationLayers direction
+        currentDJKAnimationLayer.updateFlipDirection(getFlipDirection(translation))
+        
+        if handleConflictingAnimationsWithDJKAnimationLayer(currentDJKAnimationLayer) == false {
+            //check if swipe is fast enough to be considered a complete page swipe
+            if isIncrementalSwipe(gesture, animationLayer: currentDJKAnimationLayer) {
+                currentDJKAnimationLayer.flipAnimationStatus = .active
             } else {
-                enableGesture(gesture, enable: false)
+                currentDJKAnimationLayer.flipAnimationStatus = .completing
             }
+            
+            updateViewControllerSnapShotsWithCurrentPage(currentPage)
+            setUpDJKAnimationLayerFrontAndBack(currentDJKAnimationLayer)
+            setUpStaticLayerForTheDJKAnimationLayer(currentDJKAnimationLayer)
+            
+            layer.addSublayer(currentDJKAnimationLayer)
+            //you need to perform a flush otherwise the animation duration is not honored.
+            //more information can be found here http://stackoverflow.com/questions/8661355/implicit-animation-fade-in-is-not-working#comment10764056_8661741
+            CATransaction.flush()
+            
+            //add the animation layer to the view
+            addDJKAnimationLayer()
+            
+            if currentDJKAnimationLayer.flipAnimationStatus == .active {
+                animationStatusActive(currentDJKAnimationLayer, translation: translation, progress: progress)
+            }
+        } else {
+            enableGesture(gesture, enable: false)
         }
     }
     
@@ -294,92 +284,73 @@ open class DJKFlipperView: UIView {
     }
     
     func isIncrementalSwipe(_ gesture:UIPanGestureRecognizer, animationLayer:DJKAnimationLayer) -> Bool {
-        
-        var incrementalSwipe = false
-        if fabs(gesture.velocity(in: self).x) < 500 || animationLayer.isFirstOrLastPage == true {
-            incrementalSwipe = true
-        }
-        
-        return incrementalSwipe
+        return fabs(gesture.velocity(in: self).x) < 500 || animationLayer.isFirstOrLastPage
     }
     
     func updateViewControllerSnapShotsWithCurrentPage(_ currentPage:Int) {
-        if let numberOfPages = dataSource?.numberOfPages(self) {
-            if  currentPage <= numberOfPages - 1 {
-                //set the current page snapshot
-                viewControllerSnapShots[currentPage] = dataSource?.viewForPage(currentPage, flipper: self).takeSnapshot()
-                
-                if currentPage + 1 <= numberOfPages - 1  {
-                    //set the right page snapshot, if there already is a screen shot then dont update it
-                    if viewControllerSnapShots[currentPage + 1] == nil {
-                        viewControllerSnapShots[currentPage + 1] = dataSource?.viewForPage(currentPage + 1, flipper: self).takeSnapshot()
-                    }
-                }
-                
-                if currentPage - 1 >= 0 {
-                    //set the left page snapshot, if there already is a screen shot then dont update it
-                    if viewControllerSnapShots[currentPage - 1] == nil {
-                        viewControllerSnapShots[currentPage - 1] = dataSource?.viewForPage(currentPage - 1, flipper: self).takeSnapshot()
-                    }
-                }
-            }
+        guard let numberOfPages = dataSource?.numberOfPages(self), currentPage <= numberOfPages - 1 else { return }
+        //set the current page snapshot
+        viewControllerSnapShots[currentPage] = dataSource?.viewForPage(currentPage, flipper: self).takeSnapshot()
+        
+        if currentPage + 1 <= numberOfPages - 1 && viewControllerSnapShots[currentPage + 1] == nil {
+            //set the right page snapshot, if there already is a screen shot then dont update it
+            viewControllerSnapShots[currentPage + 1] = dataSource?.viewForPage(currentPage + 1, flipper: self).takeSnapshot()
+        }
+        
+        if currentPage - 1 >= 0 && viewControllerSnapShots[currentPage - 1] == nil {
+            //set the left page snapshot, if there already is a screen shot then dont update it
+            viewControllerSnapShots[currentPage - 1] = dataSource?.viewForPage(currentPage - 1, flipper: self).takeSnapshot()
         }
     }
     
     func setUpDJKAnimationLayerFrontAndBack(_ animationLayer:DJKAnimationLayer) {
         if animationLayer.flipDirection == .left {
-            if self.currentPage + 1 > dataSource!.numberOfPages(self) - 1 {
+            if let datasource = dataSource, currentPage + 1 > datasource.numberOfPages(self) - 1 {
                 //we are at the end
                 animationLayer.flipProperties.endFlipAngle = -1.5
                 animationLayer.isFirstOrLastPage = true
-                animationLayer.setTheFrontLayer(self.viewControllerSnapShots[currentPage]!)
+                animationLayer.setTheFrontLayer(viewControllerSnapShots[currentPage] ?? UIImage())
             } else {
                 //next page flip
-                animationLayer.setTheFrontLayer(self.viewControllerSnapShots[currentPage]!)
+                animationLayer.setTheFrontLayer(viewControllerSnapShots[currentPage] ?? UIImage())
                 currentPage = currentPage + 1
-                animationLayer.setTheBackLayer(self.viewControllerSnapShots[currentPage]!)
+                animationLayer.setTheBackLayer(viewControllerSnapShots[currentPage] ?? UIImage())
             }
         } else {
             if currentPage - 1 < 0 {
                 //we are at the end
                 animationLayer.flipProperties.endFlipAngle = -CGFloat.pi + 1.5
                 animationLayer.isFirstOrLastPage = true
-                animationLayer.setTheBackLayer(viewControllerSnapShots[currentPage]!)
-                
+                animationLayer.setTheBackLayer(viewControllerSnapShots[currentPage] ?? UIImage())
             } else {
                 //previous page flip
-                animationLayer.setTheBackLayer(self.viewControllerSnapShots[currentPage]!)
+                animationLayer.setTheBackLayer(viewControllerSnapShots[currentPage] ?? UIImage())
                 currentPage = currentPage - 1
-                animationLayer.setTheFrontLayer(self.viewControllerSnapShots[currentPage]!)
+                animationLayer.setTheFrontLayer(viewControllerSnapShots[currentPage] ?? UIImage())
             }
         }
     }
     
     func setUpStaticLayerForTheDJKAnimationLayer(_ animationLayer:DJKAnimationLayer) {
         if animationLayer.flipDirection == .left {
-            if animationLayer.isFirstOrLastPage == true && animatingLayers.count <= 1 {
-                staticView.setTheLeftSide(self.viewControllerSnapShots[currentPage]!)
+            if animationLayer.isFirstOrLastPage && animatingLayers.count <= 1 {
+                staticView.setTheLeftSide(viewControllerSnapShots[currentPage] ?? UIImage())
             } else {
-                staticView.setTheLeftSide(self.viewControllerSnapShots[currentPage - 1]!)
-                staticView.setTheRightSide(self.viewControllerSnapShots[currentPage]!)
+                staticView.setTheLeftSide(viewControllerSnapShots[currentPage - 1] ?? UIImage())
+                staticView.setTheRightSide(viewControllerSnapShots[currentPage] ?? UIImage())
             }
+        } else if animationLayer.isFirstOrLastPage && animatingLayers.count <= 1 {
+            staticView.setTheRightSide(viewControllerSnapShots[currentPage] ?? UIImage())
         } else {
-            if animationLayer.isFirstOrLastPage == true && animatingLayers.count <= 1 {
-                staticView.setTheRightSide(self.viewControllerSnapShots[currentPage]!)
-            } else {
-                staticView.setTheRightSide(self.viewControllerSnapShots[currentPage + 1]!)
-                staticView.setTheLeftSide(self.viewControllerSnapShots[currentPage]!)
-            }
+            staticView.setTheRightSide(viewControllerSnapShots[currentPage + 1] ?? UIImage())
+            staticView.setTheLeftSide(viewControllerSnapShots[currentPage] ?? UIImage())
         }
     }
     
     func addDJKAnimationLayer() {
-        self.layer.addSublayer(staticView)
+        layer.addSublayer(staticView)
         CATransaction.flush()
-        
-        if let activeView = self.activeView {
-            activeView.removeFromSuperview()
-        }
+        activeView?.removeFromSuperview()
     }
     
     //MARK: DJKAnimationLayer State Active
@@ -418,45 +389,29 @@ open class DJKFlipperView: UIView {
     //MARK: - Animation Conflict Detection
     
     func handleConflictingAnimationsWithDJKAnimationLayer(_ animationLayer:DJKAnimationLayer) -> Bool {
-        
         //check if there is an animation layer before that is still animating at the opposite swipe direction
         var animationConflict = false
-        if animatingLayers.count > 1 {
-            
-            if let oppositeDJKAnimationLayer = getHighestDJKAnimationLayerFromDirection(getOppositeAnimationDirectionFromLayer(animationLayer)) {
-                if oppositeDJKAnimationLayer.isFirstOrLastPage == false {
-                    
-                    animationConflict = true
-                    //we now need to remove the newly added layer
-                    removeDJKAnimationLayer(animationLayer)
-                    reverseAnimationForLayer(oppositeDJKAnimationLayer)
-                    
-                }
-            }
+        
+        if let oppositeDJKAnimationLayer =  getHighestDJKAnimationLayerFromDirection(getOppositeAnimationDirectionFromLayer(animationLayer)),
+            animatingLayers.count > 1,
+            !oppositeDJKAnimationLayer.isFirstOrLastPage
+        {
+            animationConflict = true
+            //we now need to remove the newly added layer
+            removeDJKAnimationLayer(animationLayer)
+            reverseAnimationForLayer(oppositeDJKAnimationLayer)
         }
+        
         return animationConflict
     }
     
     func getHighestDJKAnimationLayerFromDirection(_ flipDirection:FlipDirection) -> DJKAnimationLayer? {
-        
-        var animationsInSameDirection:[DJKAnimationLayer] = []
-        
-        for animLayer in animatingLayers {
-            if animLayer.flipDirection == flipDirection {
-                animationsInSameDirection.append(animLayer)
-            }
-        }
-
+        let animationsInSameDirection = animatingLayers.filter { $0.flipDirection == flipDirection }
         return animationsInSameDirection.sorted(by: {$0.zPosition > $1.zPosition}).first
     }
     
     func getOppositeAnimationDirectionFromLayer(_ animationLayer:DJKAnimationLayer) -> FlipDirection {
-        var animationLayerOppositeDirection = FlipDirection.left
-        if animationLayer.flipDirection == .left {
-            animationLayerOppositeDirection = .right
-        }
-        
-        return animationLayerOppositeDirection
+        return animationLayer.flipDirection == .left ? .right : .left
     }
     
     func removeDJKAnimationLayer(_ animationLayer:DJKAnimationLayer) {
@@ -497,18 +452,11 @@ open class DJKFlipperView: UIView {
     func setUpForFlip(_ animationLayer:DJKAnimationLayer, progress:CGFloat, animated:Bool, clearFlip:Bool) {
         
         let newAngle:CGFloat = animationLayer.flipProperties.startAngle + progress * (animationLayer.flipProperties.endFlipAngle - animationLayer.flipProperties.startAngle)
-        
-        var duration:CGFloat
-        
-        if animated == true {
-            duration = getAnimationDurationFromDJKAnimationLayer(animationLayer, newAngle: newAngle)
-        } else {
-            duration = 0
-        }
+        let duration: CGFloat = animated ? getAnimationDurationFromDJKAnimationLayer(animationLayer, newAngle: newAngle) : 0
         
         animationLayer.flipProperties.currentAngle = newAngle
         
-        if animationLayer.isFirstOrLastPage == true {
+        if animationLayer.isFirstOrLastPage {
             setMaxAngleIfDJKAnimationLayerIsFirstOrLast(animationLayer, newAngle: newAngle)
         }
         
@@ -543,7 +491,7 @@ open class DJKFlipperView: UIView {
                 } else if animationLayer.flipAnimationStatus == .completing {
                     animationLayer.flipAnimationStatus = .none
                     
-                    if animationLayer.isFirstOrLastPage == false {
+                    if !animationLayer.isFirstOrLastPage {
                         CATransaction.begin()
                         CATransaction.setAnimationDuration(0)
                         if animationLayer.flipDirection == .left {
@@ -557,7 +505,7 @@ open class DJKFlipperView: UIView {
                     weakSelf?.animatingLayers.remove(object: animationLayer)
                     animationLayer.removeFromSuperlayer()
                     
-                    if weakSelf?.animatingLayers.count == 0 {
+                    if weakSelf?.animatingLayers.isEmpty ?? false {
                         
                         weakSelf?.flipperState = .inactive
                         weakSelf?.updateTheActiveView()
@@ -570,7 +518,6 @@ open class DJKFlipperView: UIView {
                     }
                 }
             })
-            
         }
     }
     
@@ -579,21 +526,17 @@ open class DJKFlipperView: UIView {
     func getAnimationDurationFromDJKAnimationLayer(_ animationLayer:DJKAnimationLayer, newAngle:CGFloat) -> CGFloat {
         var durationConstant = DJKFlipperConstants.DurationConstant
         
-        if animationLayer.isFirstOrLastPage == true {
+        if animationLayer.isFirstOrLastPage {
             durationConstant = 0.5
         }
         return durationConstant * fabs((newAngle - animationLayer.flipProperties.currentAngle) / (animationLayer.flipProperties.endFlipAngle - animationLayer.flipProperties.startAngle))
     }
     
     func setMaxAngleIfDJKAnimationLayerIsFirstOrLast(_ animationLayer:DJKAnimationLayer, newAngle:CGFloat) {
-        if animationLayer.flipDirection == .right {
-            if newAngle < -1.4 {
-                animationLayer.flipProperties.currentAngle = -1.4
-            }
-        } else {
-            if newAngle > -1.8 {
-                animationLayer.flipProperties.currentAngle = -1.8
-            }
+        if animationLayer.flipDirection == .right && newAngle < -1.4 {
+            animationLayer.flipProperties.currentAngle = -1.4
+        } else if newAngle > -1.8 {
+            animationLayer.flipProperties.currentAngle = -1.8
         }
     }
     
@@ -608,23 +551,22 @@ open class DJKFlipperView: UIView {
     }
     
     @objc func clearAnimations() {
-        if flipperState != .inactive {
-            //remove all animation layers and update the static view
-            updateTheActiveView()
-            
-            for animation in animatingLayers {
-                animation.flipAnimationStatus = .fail
-                animation.removeFromSuperlayer()
-            }
-            animatingLayers.removeAll(keepingCapacity: false)
-            
-            self.staticView.removeFromSuperlayer()
-            CATransaction.flush()
-            self.staticView.leftSide.contents = nil
-            self.staticView.rightSide.contents = nil
-            
-            flipperState = .inactive
+        guard flipperState != .inactive else { return }
+        //remove all animation layers and update the static view
+        updateTheActiveView()
+        
+        for animation in animatingLayers {
+            animation.flipAnimationStatus = .fail
+            animation.removeFromSuperlayer()
         }
+        animatingLayers.removeAll(keepingCapacity: false)
+        
+        staticView.removeFromSuperlayer()
+        CATransaction.flush()
+        staticView.leftSide.contents = nil
+        staticView.rightSide.contents = nil
+        
+        flipperState = .inactive
     }
     
     @objc func deviceOrientationDidChangeNotification() {
@@ -637,7 +579,9 @@ open class DJKFlipperView: UIView {
         updateTheActiveView()
         //set an array with capacity for total amount of possible pages
         viewControllerSnapShots.removeAll(keepingCapacity: false)
-        for _ in 1...dataSource!.numberOfPages(self) {
+        
+        guard let datasource = dataSource else { return }
+        for _ in 1...datasource.numberOfPages(self) {
             viewControllerSnapShots.append(nil)
         }
     }
