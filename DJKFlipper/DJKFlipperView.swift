@@ -38,6 +38,12 @@ open class DJKFlipperView: UIView {
     var flipperState = FlipperState.inactive
     var activeView:UIView?
     var currentPage = 0
+    {
+        didSet
+        {
+            guard currentPage < dataSource?.numberOfPages(self) ?? 0 || currentPage < 0 else { currentPage = oldValue; return }
+        }
+    }
     var animatingLayers:[DJKAnimationLayer] = []
     
     //MARK: - Initialization
@@ -226,10 +232,10 @@ open class DJKFlipperView: UIView {
     func handleDidNotFlipToNewPage(_ animationLayer:DJKAnimationLayer) {
         if animationLayer.flipDirection == .left {
             animationLayer.flipDirection = .right
-            self.currentPage = self.currentPage - 1
+            currentPage = currentPage - 1
         } else {
             animationLayer.flipDirection = .left
-            self.currentPage = self.currentPage + 1
+            currentPage = currentPage + 1
         }
     }
     
@@ -459,6 +465,8 @@ open class DJKFlipperView: UIView {
         if animationLayer.isFirstOrLastPage {
             setMaxAngleIfDJKAnimationLayerIsFirstOrLast(animationLayer, newAngle: newAngle)
         }
+
+        print(animated)
         
         performFlipWithDJKAnimationLayer(animationLayer, duration: duration, clearFlip: clearFlip)
     }
@@ -482,42 +490,39 @@ open class DJKFlipperView: UIView {
     
     func clearFlipAfterCompletion(_ animationLayer:DJKAnimationLayer) {
         weak var weakSelf = self
-        CATransaction.setCompletionBlock { () -> Void in
-            
-            DispatchQueue.main.async(execute: {
-                if animationLayer.flipAnimationStatus == .interrupt {
-                    animationLayer.flipAnimationStatus = .completing
-                    
-                } else if animationLayer.flipAnimationStatus == .completing {
-                    animationLayer.flipAnimationStatus = .none
-                    
-                    if !animationLayer.isFirstOrLastPage {
-                        CATransaction.begin()
-                        CATransaction.setAnimationDuration(0)
-                        if animationLayer.flipDirection == .left {
-                            weakSelf?.staticView.leftSide.contents = animationLayer.backLayer.contents
-                        } else {
-                            weakSelf?.staticView.rightSide.contents = animationLayer.frontLayer.contents
-                        }
-                        CATransaction.commit()
-                    }
-                    
-                    weakSelf?.animatingLayers.remove(object: animationLayer)
-                    animationLayer.removeFromSuperlayer()
-                    
-                    if weakSelf?.animatingLayers.isEmpty ?? false {
-                        
-                        weakSelf?.flipperState = .inactive
-                        weakSelf?.updateTheActiveView()
-                        weakSelf?.staticView.removeFromSuperlayer()
-                        CATransaction.flush()
-                        weakSelf?.staticView.leftSide.contents = nil
-                        weakSelf?.staticView.rightSide.contents = nil
+        CATransaction.setCompletionBlock {
+            if animationLayer.flipAnimationStatus == .interrupt {
+                animationLayer.flipAnimationStatus = .completing
+
+            } else if animationLayer.flipAnimationStatus == .completing {
+                animationLayer.flipAnimationStatus = .none
+
+                if !animationLayer.isFirstOrLastPage {
+                    CATransaction.begin()
+                    CATransaction.setAnimationDuration(0)
+                    if animationLayer.flipDirection == .left {
+                        weakSelf?.staticView.leftSide.contents = animationLayer.backLayer.contents
                     } else {
-                        CATransaction.flush()
+                        weakSelf?.staticView.rightSide.contents = animationLayer.frontLayer.contents
                     }
+                    CATransaction.commit()
                 }
-            })
+
+                weakSelf?.animatingLayers.remove(object: animationLayer)
+                animationLayer.removeFromSuperlayer()
+
+                if weakSelf?.animatingLayers.isEmpty ?? false {
+
+                    weakSelf?.flipperState = .inactive
+                    weakSelf?.updateTheActiveView()
+                    weakSelf?.staticView.removeFromSuperlayer()
+                    CATransaction.flush()
+                    weakSelf?.staticView.leftSide.contents = nil
+                    weakSelf?.staticView.rightSide.contents = nil
+                } else {
+                    CATransaction.flush()
+                }
+            }
         }
     }
     
