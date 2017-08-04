@@ -24,11 +24,7 @@ open class DJKFlipperView: UIView {
     //MARK: - Property Declarations
     
     var viewControllerSnapShots:[UIImage?] = []
-    open var dataSource:DJKFlipperDataSource? {
-        didSet {
-            reload()
-        }
-    }
+    open var dataSource:DJKFlipperDataSource?
     
     lazy var staticView:DJKStaticView = {
         let view = DJKStaticView(frame: self.frame)
