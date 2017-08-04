@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "DJKFlipper"
-  s.version          = "0.1.7"
+  s.version          = "0.1.8"
   s.summary          = "Flipboard like flipper library"
   s.description      = <<-DESC
 			Built with swift, this library allows you to incorporate flipboard like animations to your application.
