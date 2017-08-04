@@ -13,10 +13,18 @@ class ViewController: UIViewController, DJKFlipperDataSource {
     
     @IBOutlet weak var flipView: DJKFlipperView!
     
-    var flipperViewArray:[UIViewController] = []
+    var flipperViewArray: [UIViewController] = []
+    {
+        didSet
+        {
+            flipView.reload()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        flipView.dataSource = self
         
         let page1 = PageTestViewController(nibName: "PageTestViewController", bundle: nil)
         page1.view.frame = self.view.bounds
@@ -50,8 +58,6 @@ class ViewController: UIViewController, DJKFlipperDataSource {
         
         //add the view controllers to the flipperViewArray
         flipperViewArray += [page1,page2,page3,page4,page5,page6]
-        
-        flipView.dataSource = self
     }
     
     override func didReceiveMemoryWarning() {
